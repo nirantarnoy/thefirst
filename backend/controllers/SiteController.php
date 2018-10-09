@@ -146,8 +146,8 @@ class SiteController extends Controller
             foreach($model as $value){
                array_push($list,[
                    'loan_id'=>$value->id,
-                   'code'=>\backend\models\Suplier::findCode($value->personal_id),
-                   'name'=>\backend\models\Suplier::findName($value->personal_id),
+                   'code'=>\backend\models\Customer::findCode($value->personal_id),
+                   'name'=>\backend\models\Customer::findName($value->personal_id),
                    'next_pay_date'=>$value->next_pay_date,
                    'pay_amount'=>$value->payment_per
                ]);
@@ -161,7 +161,8 @@ class SiteController extends Controller
             $message = 'ลูกค้า '.$list[0]['code']." ".$list[0]['name']."\n"
                 .' กำหนดชำระวันที่ '.date('d-m-Y',$list[0]['next_pay_date'])."\n"
                 .' ยอดที่ต้องชำระ '.number_format($list[0]['pay_amount'],0)."\n"
-                .' เกินกำหนดชำระ '. abs($days)  ." วัน";
+                .' เกินกำหนดชำระ '. abs($days)  ." วัน"."\n"
+                .' เบอรโทร '. \backend\models\Customer::findPhone($list[0]['code']);
 
             if($days <0){
                 $this->createAppNotify(\backend\helpers\MessageType::TYPE_OVER,$message,1);
@@ -218,10 +219,11 @@ class SiteController extends Controller
                 if($daycount < 7){
                     array_push($list,[
                         'loan_id'=>$value->id,
-                        'code'=>\backend\models\Suplier::findCode($value->personal_id),
-                        'name'=>\backend\models\Suplier::findName($value->personal_id),
+                        'code'=>\backend\models\Customer::findCode($value->personal_id),
+                        'name'=>\backend\models\Customer::findName($value->personal_id),
                         'next_pay_date'=>$daytype == 1?$value->next_pay_date:$value->append_date,
-                        'pay_amount'=>$value->payment_per
+                        'pay_amount'=>$value->payment_per,
+
                     ]);
                 }
 
@@ -239,7 +241,8 @@ class SiteController extends Controller
             $message_line = 'ลูกค้า '.$list[0]['code']." ".$list[0]['name']."\n"
                 .' กำหนดชำระวันที่ '.date('d-m-Y',$list[0]['next_pay_date'])."\n"
                 .' ยอดที่ต้องชำระ '.number_format($list[0]['pay_amount'],0)."\n"
-                .' ต้องชำระในอีก '.abs($days)  ." วัน";
+                .' ต้องชำระในอีก '.abs($days)  ." วัน"."\n"
+                .' เบอรโทร '. \backend\models\Customer::findPhone($list[0]['code']);
 
             if($days >0){
                 $this->createAppNotify(\backend\helpers\MessageType::TYPE_NEAR,$message,1);
