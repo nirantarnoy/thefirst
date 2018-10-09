@@ -159,7 +159,7 @@ $last_message = \backend\models\Message::find()->where(['status'=>1])->limit(6)-
                                 <li><a href="index.php?r=product/index" class="product">สินค้า</a></li>
                                 <li><a href="index.php?r=unit/index" class="unit">หน่วยนับ</a></li>
                                 <li><a href="index.php?r=warehouse/index" class="warehouse">คลังสินค้า</a></li>
-                                <li><a href="index.php?r=location/index" class="location">ล๊อก</a></li>
+<!--                                <li><a href="index.php?r=location/index" class="location">ล๊อก</a></li>-->
                                 <li><a href="index.php?r=stockbalance/index" class="stockbalance">สต๊อกสินค้า</a></li>
                             </ul>
                         </div>
