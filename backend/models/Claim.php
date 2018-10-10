@@ -51,6 +51,25 @@ class Claim extends \common\models\Claim
 //        $model = CustomerGroup::find()->where(['id'=>$id])->one();
 //        return count($model)>0?$model->name:'';
 //    }
+    public function getLastNo(){
+        $model = \backend\models\Claim::find()->MAX('claim_no');
+//        $pre = \backend\models\Sequence::find()->where(['module_id'=>$trans_type])->one();
+        if($model){
+            $prefix = substr(date("Y"),2,2);
+            $cnum = substr((string)$model,strlen($prefix),strlen($model));
+            $len = strlen($cnum);
+            $clen = strlen($cnum + 1);
+            $loop = $len - $clen;
+            for($i=1;$i<=$loop;$i++){
+                $prefix.="0";
+            }
+            $prefix.=$cnum + 1;
+            return $prefix;
+        }else{
+            $prefix =substr(date("Y"),2,2);
+            return $prefix.'000001';
+        }
+    }
 
 
 }

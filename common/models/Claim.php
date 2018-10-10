@@ -34,8 +34,9 @@ class Claim extends \yii\db\ActiveRecord
     {
         return [
             [['claim_no'],'required'],
-            [['trans_date', 'sale_no', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [[ 'sale_no', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['claim_no'], 'string', 'max' => 255],
+            [['trans_date'],'safe'],
         ];
     }
 
@@ -49,7 +50,7 @@ class Claim extends \yii\db\ActiveRecord
             'claim_no' => Yii::t('app', 'เลขทีใบเคลม'),
             'trans_date' => Yii::t('app', 'วันที่'),
             'sale_no' => Yii::t('app', 'ใบสั่งซื้อ'),
-            'status' => Yii::t('app', 'สถาณะ'),
+            'status' => Yii::t('app', 'สถานะ'),
             'created_at' => Yii::t('app', 'สร้างเมื่อ'),
             'updated_at' => Yii::t('app', 'แก้ไขเมื่่อ'),
             'created_by' => Yii::t('app', 'สร้างโดย'),

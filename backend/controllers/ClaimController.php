@@ -75,6 +75,7 @@ class ClaimController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'runno' => $model->getLastNo(),
         ]);
     }
 
