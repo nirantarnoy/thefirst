@@ -166,6 +166,7 @@ $last_message = \backend\models\Message::find()->where(['status'=>1])->limit(6)-
                     </li>
                     <li><a href="index.php?r=purch/index" class="purch"><i class="fa fa-shopping-cart"></i> <span>ซื้อสินค้า</span></a></li>
                     <li><a href="index.php?r=sale/index" class="sale"><i class="fa fa-diamond"></i> <span>ขายสินค้า</span></a></li>
+                    <li><a href="index.php?r=claim/index" class="claim"><i class="fa fa-bolt"></i> <span>เคลมสินค้า</span></a></li>
                     <li><a href="index.php?r=loan/index" class="loan"><i class="fa fa-list-alt"></i> <span>สินเชื่อ/ผ่อน</span></a></li>
                     <li><a href="index.php?r=message/index" class="message"><i class="fa fa-comment-o"></i> <span>แจ้งเตือน</span></a></li>
                     <li><a href="index.php?r=report/index" class="report"><i class="fa fa-area-chart"></i> <span>รายงาน</span></a></li>
