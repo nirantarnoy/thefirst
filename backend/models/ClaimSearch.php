@@ -12,6 +12,7 @@ use backend\models\Claim;
  */
 class ClaimSearch extends Claim
 {
+    public $globalSearch;
     /**
      * {@inheritdoc}
      */
@@ -20,6 +21,7 @@ class ClaimSearch extends Claim
         return [
             [['id', 'trans_date', 'sale_no', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['claim_no'], 'safe'],
+            [['globalSearch'],'string']
         ];
     }
 
@@ -69,7 +71,10 @@ class ClaimSearch extends Claim
             'updated_by' => $this->updated_by,
         ]);
 
-        $query->andFilterWhere(['like', 'claim_no', $this->claim_no]);
+        if($this->globalSearch != ''){
+            $query->orFilterWhere(['like','claim_no',$this->globalSearch])
+                ->orFilterWhere(['like','product_id',$this->globalSearch]);
+        }
 
         return $dataProvider;
     }
