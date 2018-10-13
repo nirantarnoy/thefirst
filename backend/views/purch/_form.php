@@ -251,6 +251,7 @@ $js=<<<JS
                      var html = "";
                      for(var i =0;i<=data.length -1;i++){
                          html +="<tr ondblclick='getitem($(this));'><td>"+data[i]['product_code']+"</td><td>"+data[i]['name']+"<input type='hidden' class='recid' value='"+data[i]['id']+"'/></td></tr>"
+                       
                      }
                      $(".table-list tbody").html(html);
                      

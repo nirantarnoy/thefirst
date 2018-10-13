@@ -35,6 +35,7 @@ class Pay extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['loan_id'],'required'],
             [['pay_date'], 'safe'],
             [['loan_id', 'preriod', 'pay_from', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['amount'], 'number'],

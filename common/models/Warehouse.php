@@ -33,6 +33,7 @@ class Warehouse extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['name'],'required'],
             [['is_primary', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['name', 'description'], 'string', 'max' => 255],
         ];

@@ -34,6 +34,7 @@ class ClaimLine extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['claim_id'],'required'],
             [['status', 'claim_id', 'product_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['qty'], 'number'],
             [['problem'], 'string', 'max' => 255],

@@ -49,7 +49,7 @@ class Claim extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'claim_no' => Yii::t('app', 'เลขทีใบเคลม'),
             'trans_date' => Yii::t('app', 'วันที่'),
-            'sale_no' => Yii::t('app', 'ใบสั่งซื้อ'),
+            'sale_no' => Yii::t('app', 'เลขที่ใบขาย'),
             'status' => Yii::t('app', 'สถานะ'),
             'created_at' => Yii::t('app', 'สร้างเมื่อ'),
             'updated_at' => Yii::t('app', 'แก้ไขเมื่่อ'),

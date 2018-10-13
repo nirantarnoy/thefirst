@@ -32,6 +32,7 @@ class VendorGroup extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['name'],'required'],
             [['status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['name', 'description'], 'string', 'max' => 255],
         ];

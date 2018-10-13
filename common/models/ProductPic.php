@@ -32,6 +32,7 @@ class ProductPic extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['product_id'],'required'],
             [['product_id', 'picture', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
         ];
     }

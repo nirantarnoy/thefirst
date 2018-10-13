@@ -46,6 +46,7 @@ class JournalTrans extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['journal_id'],'required'],
             [['journal_id', 'product_id', 'journal_type_status','stock_direction', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'onhand_qty', 'counted_qty', 'diff_qty', 'from_wh', 'to_wh', 'from_loc', 'to_loc', 'from_lot', 'to_lot', 'zone_id'], 'integer'],
             [['qty', 'line_amount', 'line_price'], 'number'],
         ];

@@ -37,6 +37,7 @@ class SaleLine extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['sale_id'],'integer'],
             [['sale_id', 'product_id', 'qty', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['price', 'line_disc_per', 'line_disc_amount', 'line_total'], 'number'],
         ];

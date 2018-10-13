@@ -40,6 +40,7 @@ class Addressbook extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['party_id'],'required'],
             [['address_type_id', 'party_type_id', 'party_id', 'district_id', 'city_id', 'province_id', 'zipcode', 'is_primary', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['address', 'street'], 'string', 'max' => 255],
         ];

@@ -8,6 +8,7 @@ use backend\models\ClaimSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
 
 /**
  * ClaimController implements the CRUD actions for Claim model.
@@ -127,5 +128,29 @@ class ClaimController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    public function actionFindso(){
+        $so = Yii::$app->request->post("so");
+        $list = [];
+        if($so){
+            $model = \backend\models\Sale::find()->where(['sale_no'=>$so])->one();
+            if($model){
+                $modelline = \backend\models\Saleline::find()->select(['sale_id','product_id','qty'])->where(['sale_id'=>$model->id])->all();
+                if($modelline){
+                    foreach ($modelline as $value){
+                        array_push($list,['sale_id'=>$value->sale_id,'product_id'=>$value->product_id,
+                                                 'product_code'=>\backend\models\Product::findProductcode($value->product_id),
+                                                 'name'=>\backend\models\Product::findName($value->product_id),
+                                                 'qty'=>$value->qty]);
+                    }
+
+                    return Json::encode($list);
+                }else{
+                    return Json::encode($list);
+                }
+            }else{
+                return Json::encode($list);
+            }
+        }
     }
 }
