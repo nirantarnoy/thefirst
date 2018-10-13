@@ -34,6 +34,7 @@ class Warehouse extends \yii\db\ActiveRecord
     {
         return [
             [['name'],'required'],
+            [['name'],'unique'],
             [['is_primary', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['name', 'description'], 'string', 'max' => 255],
         ];
