@@ -126,7 +126,7 @@ class ProductcatController extends Controller
     {
         $this->findModel($id)->delete();
             $session = Yii::$app->session;
-            $session->setFlash('msg','บันทึกรายการเรียบร้อย');
+            $session->setFlash('msg','ลบรายการเรียบร้อย');
             return $this->redirect(['index']);
 
     }

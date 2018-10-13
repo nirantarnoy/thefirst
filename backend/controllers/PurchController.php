@@ -10,7 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
 use backend\models\Journal;
-
+use yii\filters\AccessControl;
 /**
  * PurchController implements the CRUD actions for Purch model.
  */
@@ -29,6 +29,16 @@ class PurchController extends Controller
                     'delete' => ['POST','GET'],
                 ],
             ],
+            'access'=>[
+                'class'=>AccessControl::className(),
+                'rules'=>[
+                    [
+                        'allow'=>true,
+                        'actions'=>['index','create','update','delete','view'],
+                        'roles'=>['@'],
+                    ]
+                ]
+            ]
         ];
     }
 
@@ -196,11 +206,14 @@ class PurchController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if(\backend\models\Purchline::deleteAll(['purch_id'=>$id])){
+            $this->findModel($id)->delete();
 
-        $session = Yii::$app->session;
-        $session->setFlash('msg','ลบรายการเรียบร้อย');
-        return $this->redirect(['index']);
+            $session = Yii::$app->session;
+            $session->setFlash('msg','ลบรายการเรียบร้อย');
+            return $this->redirect(['index']);
+        }
+
     }
 
     /**

@@ -325,7 +325,7 @@ $js = <<<JS
    function recDelete(e){
         //e.preventDefault();
         var url = e.attr("data-url");
-       // alert(url);
+        alert(url);
         swal({
               title: "ต้องการลบรายการนี้ใช่หรือไม่",
               text: "",
