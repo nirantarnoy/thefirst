@@ -39,7 +39,7 @@ class Sale extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sale_no'],'required'],
+            [['sale_no','customer_id'],'required'],
             [[ 'customer_id', 'sale_type_id', 'payment_type_id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['discount_per', 'discount_amount', 'sale_total'], 'number'],
             [['sale_no', 'sale_total_text'], 'string', 'max' => 255],

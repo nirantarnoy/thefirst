@@ -81,7 +81,7 @@ use yii\helpers\Url;
                         <div class="col-md-8 col-sm-12 col-xs-12">
                             <?= $form->field($model, 'sale_type_id')->widget(Select2::className(),[
                                 'data'=>ArrayHelper::map(\backend\helpers\SaleType::asArrayObject(),'id','name'),
-                                'options' => ['placeholder'=>'เลือกประเภท'],
+                                'options' => [],
                             ])->label(false) ?>
                         </div>
                     </div>

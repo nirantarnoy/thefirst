@@ -33,7 +33,7 @@ class Claim extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['claim_no'],'required'],
+            [['claim_no','sale_no'],'required'],
             [[ 'sale_no', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['claim_no'], 'string', 'max' => 255],
             [['trans_date'],'safe'],
