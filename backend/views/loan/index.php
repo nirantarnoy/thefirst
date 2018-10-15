@@ -390,8 +390,8 @@ $js =<<<JS
            // var today = new Date(todays);
            var useToday = new Date(arrDate2[2], arrDate2[1] - 1, arrDate2[0]);
            var useDate = new Date(arrDate[2], arrDate[1] - 1, arrDate[0]);
-            alert(useToday);
-           alert(useDate);
+            //alert(useToday);
+           //alert(useDate);
             if (useToday > useDate) {
                $(".fine-per-day").val(data[0]['fine_per_day']);
             } else{
@@ -416,7 +416,7 @@ $js =<<<JS
            'async': false,
            'data': {'loanid': loanid,'payamt': payamt,'find':fine,'note':note,'peroidof':paytimeof},
            'success': function(data){
-              alert(data);
+              //alert(data);
            }
         });
        

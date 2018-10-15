@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
+use kartik\mpdf\Pdf;
 
 /**
  * SaleController implements the CRUD actions for Sale model.
@@ -285,6 +286,70 @@ class SaleController extends Controller
         if($model){
             $model->status = 2;
             $model->save();
+        }
+    }
+    public function actionPrintbill(){
+        $id = \Yii::$app->request->post("id");
+        $papersize = Yii::$app->request->post('paper_size');
+        if($id){
+          //  return $papersize;
+            $model = \backend\models\Sale::find()->where(['id'=>$id])->one();
+            $bill_total = 0;
+            if($model){
+                $shop = \backend\models\Plant::find()->one();
+                $modeladdress = \backend\models\AddressBook::find()->where(['party_id'=>1])->one();
+                $modelline = \backend\models\Saleline::find()->where(['sale_id'=>$id])->all();
+
+                if($modelline){
+                    foreach($modelline as $val){
+                        $bill_total = $bill_total + $val->line_total;
+                    }
+                }
+
+
+                $custname = '';
+                $modelcust = \backend\models\Customer::find()->where(['id'=>$model->customer_id])->one();
+                if($modelcust){
+                    $custname = $modelcust->first_name;
+                }
+
+                $pdf = new Pdf([
+                    'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
+                    //  'format' => [150,236], //manaul
+                    'format' => $papersize ==1? Pdf::FORMAT_A4:[140,210],
+                    //'format' =>  Pdf::FORMAT_A5,
+                    'orientation' => $papersize ==1?Pdf::ORIENT_PORTRAIT: Pdf::ORIENT_LANDSCAPE,
+                    'destination' => Pdf::DEST_BROWSER,
+                    'content' => $this->renderPartial('_bill',[
+                        'model'=>$model,
+                        'shop'=>$shop,
+                        'modelline'=>$modelline,
+                        'modeladdress'=>$modeladdress,
+                        'custname'=>$custname,
+                        'bill_date'=>date('d-m-Y'),
+                        'bill_total' => $bill_total,
+
+                    ]),
+                    //'content' => "nira",
+                   // 'defaultFont' => '@backend/web/fonts/config.php',
+                    'cssFile' => '@backend/web/css/pdf.css',
+                    'options' => [
+                        'title' => 'ใบเสร็จ',
+                        'subject' => ''
+                    ],
+                    'methods' => [
+                        //  'SetHeader' => ['รายงานรหัสสินค้า||Generated On: ' . date("r")],
+                        //  'SetFooter' => ['|Page {PAGENO}|'],
+                        //'SetFooter'=>'niran',
+                    ],
+
+                ]);
+                //return $this->redirect(['genbill']);
+                Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+                Yii::$app->response->headers->add('Content-Type', 'application/pdf');
+                return $pdf->render();
+
+            }
         }
     }
 }

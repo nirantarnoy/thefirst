@@ -53,6 +53,9 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="btn-group">
                 <?= Html::a(Yii::t('app', '<i class="fa fa-plus"></i> สร้างการขาย'), ['create'], ['class' => 'btn btn-success']) ?>
             </div>
+<!--            <div class="btn-group">-->
+<!--                <div class="btn btn-default btn-print"><i class="fa fa-print"></i> พิมพ์ใบเสร็จ</div>-->
+<!--            </div>-->
             <h4 class="pull-right"><?=$this->title?> <i class="fa fa-hourglass"></i><small></small></h4>
             <!-- <ul class="nav navbar-right panel_toolbox">
               <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
@@ -164,7 +167,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => ['style' => 'text-align:center;','class' => 'activity-view-link',],
                 'class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'text-align: right'],
-                'template' => '{confirmsale}{update}{delete}',
+                'template' => '{confirmsale}{printbill}{update}{delete}',
                 'buttons' => [
                     'confirmsale' => function($url, $data, $index) {
                         $options = array_merge([
@@ -179,6 +182,19 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                         return Html::a('<span class="glyphicon glyphicon-flash btn btn-default"></span>', 'javascript:void(0)', $options);
                      },
+                    'printbill' => function($url, $data, $index) {
+                        $options = array_merge([
+                            'title' => Yii::t('yii', 'พิมพ์'),
+                            'aria-label' => Yii::t('yii', 'พิมพ์'),
+                            //'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                            //'data-method' => 'post',
+                            //'data-pjax' => '0',
+                            'data-val'=>$data->id,
+                            'data-url'=>$url,
+                            'onclick'=>'printbill($(this));'
+                        ]);
+                        return Html::a('<span class="glyphicon glyphicon-print btn btn-default"></span>', 'javascript:void(0)', $options);
+                    },
                     'update' => function($url, $data, $index) {
                         $options = array_merge([
                             'title' => Yii::t('yii', 'Update'),
@@ -217,14 +233,66 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <?php Pjax::end(); ?>
 </div>
+    <div id="billxModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><i class="fa fa-print"></i> พิมพ์ใบเสร็จ <small id="items"> </small></h4>
+                </div>
+                <div class="modal-body">
+                    <form id="form-modal-bill" action="<?=Url::to(['sale/printbill'],true)?>" method="post" target="_blank">
+                        <br>
+                        <input type="hidden" name="id" value="" class="sale_line_id">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                ขนาดกระดาษที่ต้องการ
+                                <select name="paper_size" id="paper-size">
+                                    <option value="1">A4</option>
+                                    <option value="2">A5</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success btn-print-bill">พิมพ์</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 <?php
 $this->registerJsFile( '@web/js/sweetalert.min.js',['depends' => [\yii\web\JqueryAsset::className()]],static::POS_END);
 $this->registerCssFile( '@web/css/sweetalert.css');
 //$url_to_delete =  Url::to(['product/bulkdelete'],true);
+$url_to_print = Url::to(['sale/printbill'],true);
 $this->registerJs('
     $(function(){
         $("#perpage").change(function(){
             $("#form-perpage").submit();
+        });
+        
+       
+        $(".btn-print-bill").click(function(){
+            $("#form-modal-bill").submit();
+            $("#billxModal").modal("hide");
+      //      var ids = $(".sale_line_id").val();
+//            if(ids !=""){
+//            alert(ids);
+//               $.ajax({
+//                  "type":"post",
+//                  "dataType":"html",
+//                  "url":"'.$url_to_print.'",
+//                  "data": {"id":ids},
+//                  "success": function(data){
+//                     alert(data);
+//                   
+//                  }
+//               });
+//            }
         });
         
     });
@@ -246,9 +314,10 @@ $this->registerJs('
                 "type":"Post",
                 "dataType":"html",
                 "url": url,
+                "async": false,
                 "data": {"saleid": saleid},
                 "success": function(data){
-                   alert(data);
+                  
                 }
               });   
         });
@@ -267,6 +336,10 @@ $this->registerJs('
               e.attr("href",url); 
               e.trigger("click");        
         });
+    }
+    function printbill(e){
+     var ids = e.parents("tr").data("key");
+     $("#billxModal").modal("show").find(".sale_line_id").val(ids);
     }
 
     ',static::POS_END);

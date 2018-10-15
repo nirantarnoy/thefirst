@@ -35,6 +35,7 @@ class Purch extends \yii\db\ActiveRecord
     {
         return [
             [['purch_no','vendor_id'],'required'],
+            [['purch_no'],'unique'],
             [['purch_date'], 'safe'],
             [['vendor_id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['purch_total'], 'number'],
