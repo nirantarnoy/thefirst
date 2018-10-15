@@ -96,8 +96,8 @@ table.table-vendor td{
                          <?= Html::a(Yii::t('app', '<i class="fa fa-plus"></i> สร้างรหัสสินค้า'), ['create'], ['class' => 'btn btn-success']) ?>
                        </div>
                        <div class="btn-group">
-                          <div class="btn btn-default btn-import"><i class="fa fa-upload"></i> นำเข้า</div>
-                          <div class="btn btn-default btn-export"><i class="fa fa-download"></i> นำออก</div>
+                          <div class="btn btn-default btn-import"><i class="fa fa-download"></i> นำเข้า</div>
+                          <div class="btn btn-default btn-export"><i class="fa fa-upload"></i> นำออก</div>
                            <div class="btn btn-default btn-bulk-remove"><i class="fa fa-trash"></i><span class="remove_item"></span> ลบ</div>
                           <div class="btn btn-default btn-printbarcode"><i class="fa fa-barcode"></i> พิมพ์บาร์โค้ด</div>
 <!--                          <div class="btn btn-default view-list"><i class="fa fa-list"></i></div>-->

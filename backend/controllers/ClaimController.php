@@ -109,9 +109,15 @@ class ClaimController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if(\common\models\ClaimLine::deleteAll(['claim_id'=>$id])){
+            $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+            $session = Yii::$app->session;
+            $session->setFlash('msg','ลบรายการเรียบร้อย');
+            return $this->redirect(['index']);
+        }
+
+
     }
 
     /**
