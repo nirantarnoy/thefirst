@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="pull-right">
-                                        <form id="form-perpage" class="form-inline" action="<?=Url::to(['location/index'],true)?>" method="post">
+                                        <form id="form-perpage" class="form-inline" action="<?=Url::to(['message/index'],true)?>" method="post">
                                             <div class="form-group">
                                                 <label>แสดง </label>
                                                 <select class="form-control" name="perpage" id="perpage">
