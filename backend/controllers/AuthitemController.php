@@ -192,8 +192,8 @@ class AuthitemController extends Controller
         $auth = Yii::$app->authManager;
         $auth->removeAll();
 
-        $rule = new \common\rbac\DeleteRecordRule(); // rule ที่สร้างไว้
-        $auth->add($rule);
+       // $rule = new \common\rbac\DeleteRecordRule(); // rule ที่สร้างไว้
+      //  $auth->add($rule);
 
         // site module
 

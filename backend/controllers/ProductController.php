@@ -17,6 +17,7 @@ use backend\helpers\TransType;
 use backend\models\TransCalculate;
 use yii\filters\AccessControl;
 use backend\models\Productpic;
+use yii\web\ForbiddenHttpException;
 
 /**
  * ProductController implements the CRUD actions for Product model.
@@ -37,16 +38,40 @@ class ProductController extends Controller
                     'findvendor'=>['POST'],
                 ],
             ],
+//            'access'=>[
+//                'class'=>AccessControl::className(),
+//                'rules'=>[
+//                    [
+//                        'allow'=>true,
+//                        'actions'=>['index','create','update','delete','view','deletepic','exporttemplate','importproduct','export'],
+//                        'roles'=>['@'],
+//                    ]
+//                ]
+//            ]
             'access'=>[
                 'class'=>AccessControl::className(),
+                'denyCallback' => function ($rule, $action) {
+                    throw new ForbiddenHttpException('คุณไม่ได้รับอนุญาติให้เข้าใช้งาน!');
+                },
                 'rules'=>[
+//                    [
+//                        'allow'=>true,
+//                        'actions'=>['index','create','update','delete','view'],
+//                        'roles'=>['@'],
+//                    ]
                     [
                         'allow'=>true,
-                        'actions'=>['index','create','update','delete','view','deletepic','exporttemplate','importproduct','export'],
                         'roles'=>['@'],
+                        'matchCallback'=>function($rule,$action){
+                            $currentRoute = Yii::$app->controller->getRoute();
+                            if(Yii::$app->user->can($currentRoute)){
+                                return true;
+                            }
+                        }
                     ]
                 ]
             ]
+
         ];
     }
 
