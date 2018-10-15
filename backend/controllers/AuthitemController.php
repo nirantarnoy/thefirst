@@ -288,6 +288,8 @@ class AuthitemController extends Controller
         $auth->add($purch_cancelqc);
         $purch_createinv = $auth->createPermission('purch/createinv');
         $auth->add($purch_createinv);
+        $purch_finditem = $auth->createPermission('purch/finditem');
+        $auth->add($purch_finditem);
 
         $purch_permission = $auth->createPermission('purchmodule');
         $purch_permission->description = "สิทธิ์ใช้งานโมดูล purch";
@@ -301,6 +303,7 @@ class AuthitemController extends Controller
         $auth->addChild($purch_permission,$purch_create);
         $auth->addChild($purch_permission,$purch_cancelqc);
         $auth->addChild($purch_permission,$purch_createinv);
+        $auth->addChild($purch_permission,$purch_finditem);
 
         $manage_purch = $auth->createRole('Manage purch');
         $manage_purch->description = "Manage product received";
@@ -326,6 +329,8 @@ class AuthitemController extends Controller
         $auth->add($sale_cancel);
         $sale_confirm = $auth->createPermission('sale/confirmsale');
         $auth->add($sale_confirm);
+        $sale_finditem = $auth->createPermission('sale/finditem');
+        $auth->add($sale_finditem);
 
         $sale_permission = $auth->createPermission('salemodule');
         $sale_permission->description = "สิทธิ์ใช้งานโมดูล sale";
@@ -340,6 +345,7 @@ class AuthitemController extends Controller
         $auth->addChild($sale_permission,$sale_getzoneinfo);
         $auth->addChild($sale_permission,$sale_cancel);
         $auth->addChild($sale_permission,$sale_confirm);
+        $auth->addChild($sale_permission,$sale_finditem);
 
         $manage_sale = $auth->createRole('Manage sale');
         $manage_sale->description = "Manage product issue";
@@ -373,6 +379,37 @@ class AuthitemController extends Controller
         $manage_employee->description = "Manage invoice";
         $auth->add($manage_employee);
         $auth->addChild($manage_employee,$employee_permission);
+
+        //claim module
+        $claim_index = $auth->createPermission('claim/index');
+        $auth->add($claim_index);
+        $claim_update = $auth->createPermission('claim/update');
+        $auth->add($claim_update);
+        $claim_delete = $auth->createPermission('claim/delete');
+        $auth->add($claim_delete);
+        $claim_view = $auth->createPermission('claim/view');
+        $auth->add($claim_view);
+        $claim_create = $auth->createPermission('claim/create');
+        $auth->add($claim_create);
+        $claim_findso = $auth->createPermission('claim/findso');
+        $auth->add($claim_findso);
+
+        $claim_permission = $auth->createPermission('claimmodule');
+        $claim_permission->description = "สิทธิ์ใช้งานโมดูล claim";
+        $auth->add($claim_permission);
+
+        $auth->addChild($claim_permission,$claim_index);
+        $auth->addChild($claim_permission,$claim_view);
+        $auth->addChild($claim_permission,$claim_update);
+        $auth->addChild($claim_permission,$claim_delete);
+        $auth->addChild($claim_permission,$claim_create);
+        $auth->addChild($claim_permission,$claim_findso);
+
+        $manage_claim = $auth->createRole('Manage claim');
+        $manage_claim->description = "Manage claim";
+        $auth->add($manage_claim);
+        $auth->addChild($manage_claim,$claim_permission);
+
 
         //message module
         $message_index = $auth->createPermission('message/index');
