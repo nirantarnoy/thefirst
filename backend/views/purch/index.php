@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="panel-heading">
             <div class="btn-group">
                 <?= Html::a(Yii::t('app', '<i class="fa fa-plus"></i> สร้างรายการซื้อ'), ['create'], ['class' => 'btn btn-success']) ?>
-               <div class="btn btn-default"><i class="fa fa-retweet"></i> รับสินค้า</div>
+<!--               <div class="btn btn-default"><i class="fa fa-retweet"></i> รับสินค้า</div>-->
             </div>
 
             <h4 class="pull-right"><?=$this->title?> <i class="fa fa-cubes"></i><small></small></h4>
