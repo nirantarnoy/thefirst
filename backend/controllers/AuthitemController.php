@@ -364,6 +364,8 @@ class AuthitemController extends Controller
         $auth->add($manage_purch);
         $auth->addChild($manage_purch,$purch_permission);
 
+
+
         //prodissue module
         $sale_index = $auth->createPermission('sale/index');
         $auth->add($sale_index);
@@ -547,8 +549,8 @@ class AuthitemController extends Controller
 
 
 
-        $auth->assign($admin_role,17);
-        $auth->assign($user_role,19);
+//        $auth->assign($admin_role,17);
+//        $auth->assign($user_role,19);
 
 
 

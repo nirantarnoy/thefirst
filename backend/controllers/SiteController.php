@@ -26,7 +26,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index','resetpassword'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -272,5 +272,17 @@ class SiteController extends Controller
     }
     public function checkdupmessage($loanid){
 
+    }
+    public function actionResetpassword(){
+        $model=new \backend\models\Resetform();
+        if($model->load(Yii::$app->request->post())){
+            $model_user = \backend\models\User::find()->where(['id'=>Yii::$app->user->id])->one();
+            $model_user->setPassword($model->confirmpw);
+            $model_user->save();
+            return $this->redirect(['site/index']);
+        }
+        return $this->render('_setpassword',[
+            'model'=>$model
+        ]);
     }
 }

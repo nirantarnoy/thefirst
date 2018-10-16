@@ -80,7 +80,7 @@ class ClaimController extends Controller
             $line_ref = \Yii::$app->request->post('line_ref');
 
             $model->trans_date = strtotime($model->trans_date);
-            $model->status == 1;
+            $model->status = 1;
 
             if($model->save()){
                 if(count($product) > 0){
@@ -168,6 +168,12 @@ class ClaimController extends Controller
     public function actionDelete($id)
     {
         if(\common\models\ClaimLine::deleteAll(['claim_id'=>$id])){
+            $this->findModel($id)->delete();
+
+            $session = Yii::$app->session;
+            $session->setFlash('msg','ลบรายการเรียบร้อย');
+            return $this->redirect(['index']);
+        }else{
             $this->findModel($id)->delete();
 
             $session = Yii::$app->session;

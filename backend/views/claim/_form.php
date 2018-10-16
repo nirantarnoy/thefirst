@@ -240,7 +240,7 @@ $js = <<<JS
                       $.ajax({
                            'type':'post',
                            'dataType': 'json',
-                           'url': "$url_to_find",
+                           'url': "$url_to_confirm",
                            'data': {'id': "$model->id"},
                            'success': function(data){
                                
