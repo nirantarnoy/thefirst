@@ -161,7 +161,7 @@ use yii\helpers\Url;
 
             <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-success">
-                <div class="btn btn-primary"> ยืนยันการทำรายการ</div>
+                <div class="btn btn-primary btn-confirm-claim"> ยืนยันการทำรายการ</div>
             </div>
 
                     <?php ActiveForm::end(); ?>
@@ -206,7 +206,10 @@ use yii\helpers\Url;
     </div>
 </div>
 <?php
+$this->registerJsFile( '@web/js/sweetalert.min.js',['depends' => [\yii\web\JqueryAsset::className()]],static::POS_END);
+$this->registerCssFile( '@web/css/sweetalert.css');
 $url_to_find = Url::to(['claim/findso'],true);
+$url_to_confirm = Url::to(['claim/confirmclaim'],true);
 $js = <<<JS
  $(function() {
      linenum();
@@ -223,6 +226,29 @@ $js = <<<JS
        tr.after(clone);
        linenum();
     });
+     
+      $(".btn-confirm-claim").click(function(){
+          var url = "$url_to_confirm";
+            swal({
+                  title: "ต้องการยืนยันรายการนี้ใช่หรือไม่",
+                  text: "",
+                  type: "success",
+                  showCancelButton: true,
+                  closeOnConfirm: false,
+                  showLoaderOnConfirm: true
+                }, function () {
+                      $.ajax({
+                           'type':'post',
+                           'dataType': 'json',
+                           'url': "$url_to_find",
+                           'data': {'id': "$model->id"},
+                           'success': function(data){
+                               
+                            }
+                      });
+            });
+      });
+      
     $(".itemsearch").change(function() {
         var txt = $(this).val();
         $.ajax({
