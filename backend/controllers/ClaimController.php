@@ -15,6 +15,7 @@ use yii\helpers\Json;
  */
 class ClaimController extends Controller
 {
+    public $enableCsrfValidation = false;
     /**
      * {@inheritdoc}
      */
@@ -24,7 +25,7 @@ class ClaimController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'delete' => ['POST','GET'],
                 ],
             ],
         ];
@@ -78,6 +79,9 @@ class ClaimController extends Controller
             $line_cause = \Yii::$app->request->post('line_cause');
             $line_ref = \Yii::$app->request->post('line_ref');
 
+            $model->trans_date = strtotime(date('d-m-Y',$model->trans_date));
+            $model->status == 1;
+
             if($model->save()){
                 if(count($product) > 0){
                     for($i=0;$i<=count($product)-1;$i++){
@@ -85,6 +89,10 @@ class ClaimController extends Controller
                         $modelline->claim_id = $model->id;
                         $modelline->product_id = $product[$i];
                         $modelline->problem = $line_cause[$i];
+                        $modelline->qty = $line_qty[$i];
+                        $modelline->sale_ref = $line_ref[$i];
+                        $modelline->status = 1;
+                        $modelline->save();
                     }
                 }
             }

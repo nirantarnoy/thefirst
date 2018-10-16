@@ -101,7 +101,7 @@ if ($session->getFlash('msg')): ?>
                 }
             ],
             'sale_no',
-            'status',
+            //'status',
             //'created_at',
             //'updated_at',
             //'created_by',
@@ -130,7 +130,7 @@ if ($session->getFlash('msg')): ?>
                             'data-pjax' => '0',
                             'id'=>'modaledit',
                         ]);
-                        return $data->status == 1? Html::a(
+                        return $data->status != 100? Html::a(
                             '<span class="glyphicon glyphicon-pencil btn btn-xs btn-default"></span>', $url, [
                             'id' => 'activity-view-link',
                             //'data-toggle' => 'modal',
@@ -159,3 +159,28 @@ if ($session->getFlash('msg')): ?>
     <?php Pjax::end(); ?>
         </div>
     </div>
+<?php
+$this->registerJsFile( '@web/js/sweetalert.min.js',['depends' => [\yii\web\JqueryAsset::className()]],static::POS_END);
+$this->registerCssFile( '@web/css/sweetalert.css');
+$js =<<<JS
+   $(function() {
+     
+   });
+   function recDelete(e){
+        //e.preventDefault();
+        var url = e.attr("data-url");
+        swal({
+              title: "ต้องการลบรายการนี้ใช่หรือไม่",
+              text: "",
+              type: "error",
+              showCancelButton: true,
+              closeOnConfirm: false,
+              showLoaderOnConfirm: true
+            }, function () {
+              e.attr("href",url); 
+              e.trigger("click");        
+        });
+    }
+JS;
+$this->registerJs($js,static::POS_END);
+?>

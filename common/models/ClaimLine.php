@@ -52,6 +52,7 @@ class ClaimLine extends \yii\db\ActiveRecord
             'claim_id' => Yii::t('app', 'Claim ID'),
             'product_id' => Yii::t('app', 'Product ID'),
             'qty' => Yii::t('app', 'Qty'),
+            'sale_ref'=>Yii::t('app','เลขที่อ้างอิง'),
             'problem' => Yii::t('app', 'Problem'),
             'created_at' => Yii::t('app', 'สร้างเมื่อ'),
             'updated_at' => Yii::t('app', 'แก้ไขเมื่่อ'),
