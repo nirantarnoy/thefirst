@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\UploadedFile;
+use yii\web\ForbiddenHttpException;
 
 use \backend\models\AddressBook;
 /**
@@ -32,11 +33,24 @@ class PlantController extends Controller
             ],
             'access'=>[
                 'class'=>AccessControl::className(),
+                'denyCallback' => function ($rule, $action) {
+                    throw new ForbiddenHttpException('คุณไม่ได้รับอนุญาติให้เข้าใช้งาน!');
+                },
                 'rules'=>[
+//                    [
+//                        'allow'=>true,
+//                        'actions'=>['index','create','update','delete','view'],
+//                        'roles'=>['@'],
+//                    ]
                     [
                         'allow'=>true,
-                        'actions'=>['index','create','update','delete','showcity','showdistrict','showzipcode'],
                         'roles'=>['@'],
+                        'matchCallback'=>function($rule,$action){
+                            $currentRoute = Yii::$app->controller->getRoute();
+                            if(Yii::$app->user->can($currentRoute)){
+                                return true;
+                            }
+                        }
                     ]
                 ]
             ]
