@@ -242,6 +242,60 @@ class AuthitemController extends Controller
         $auth->add($manage_plant);
         $auth->addChild($manage_plant,$plant_permission);
 
+        // user_module
+        $user_index = $auth->createPermission('user/index');
+        $auth->add($user_index);
+        $user_update = $auth->createPermission('user/update');
+        $auth->add($user_update);
+        $user_delete = $auth->createPermission('user/delete');
+        $auth->add($user_delete);
+        $user_view = $auth->createPermission('user/view');
+        $auth->add($user_view);
+        $user_create = $auth->createPermission('user/create');
+        $auth->add($user_create);
+
+        $user_permission = $auth->createPermission('usermodule');
+        $user_permission->description = "สิทธิ์ใช้งานโมดูล user";
+        $auth->add($user_permission);
+
+        $auth->addChild($user_permission,$user_index);
+        $auth->addChild($user_permission,$user_view);
+        $auth->addChild($user_permission,$user_update);
+        $auth->addChild($user_permission,$user_delete);
+        $auth->addChild($user_permission,$user_create);
+
+        $manage_user = $auth->createRole('Manage user');
+        $manage_user->description = "Manage user";
+        $auth->add($manage_user);
+        $auth->addChild($manage_user,$user_permission);
+
+        // user_group_module
+        $usergroup_index = $auth->createPermission('usergroup/index');
+        $auth->add($usergroup_index);
+        $usergroup_update = $auth->createPermission('usergroup/update');
+        $auth->add($usergroup_update);
+        $usergroup_delete = $auth->createPermission('usergroup/delete');
+        $auth->add($usergroup_delete);
+        $usergroup_view = $auth->createPermission('usergroup/view');
+        $auth->add($usergroup_view);
+        $usergroup_create = $auth->createPermission('usergroup/create');
+        $auth->add($usergroup_create);
+
+        $usergroup_permission = $auth->createPermission('usergroupmodule');
+        $usergroup_permission->description = "สิทธิ์ใช้งานโมดูล usergroup";
+        $auth->add($usergroup_permission);
+
+        $auth->addChild($usergroup_permission,$usergroup_index);
+        $auth->addChild($usergroup_permission,$usergroup_view);
+        $auth->addChild($usergroup_permission,$usergroup_update);
+        $auth->addChild($usergroup_permission,$usergroup_delete);
+        $auth->addChild($usergroup_permission,$usergroup_create);
+
+        $manage_usergroup = $auth->createRole('Manage usergroup');
+        $manage_usergroup->description = "Manage usergroup";
+        $auth->add($manage_usergroup);
+        $auth->addChild($manage_usergroup,$usergroup_permission);
+
         // product module
         $product_index = $auth->createPermission('product/index');
         $auth->add($product_index);
@@ -474,6 +528,8 @@ class AuthitemController extends Controller
         $auth->add($admin_role);
 
         $auth->addChild($admin_role,$manage_plant);
+        $auth->addChild($admin_role,$manage_user);
+        $auth->addChild($admin_role,$manage_usergroup);
         $auth->addChild($admin_role,$manage_product);
         $auth->addChild($admin_role,$manage_purch);
         $auth->addChild($admin_role,$manage_sale);
