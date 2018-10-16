@@ -79,13 +79,13 @@ class ClaimController extends Controller
             $line_cause = \Yii::$app->request->post('line_cause');
             $line_ref = \Yii::$app->request->post('line_ref');
 
-            $model->trans_date = strtotime(date('d-m-Y',$model->trans_date));
+            $model->trans_date = strtotime($model->trans_date);
             $model->status == 1;
 
             if($model->save()){
                 if(count($product) > 0){
                     for($i=0;$i<=count($product)-1;$i++){
-                        $modelline = new \common\models\ClaimLine();
+                        $modelline = new \backend\models\Claimline();
                         $modelline->claim_id = $model->id;
                         $modelline->product_id = $product[$i];
                         $modelline->problem = $line_cause[$i];
@@ -118,13 +118,43 @@ class ClaimController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $modelline = \backend\models\Claimline::find()->where(['claim_id'=>$id])->all();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) ) {
+
+            $product = \Yii::$app->request->post('product_id');
+            $product_name = \Yii::$app->request->post('product_name');
+            $line_qty = \Yii::$app->request->post('line_qty');
+            $line_cause = \Yii::$app->request->post('line_cause');
+            $line_ref = \Yii::$app->request->post('line_ref');
+
+            $model->trans_date = strtotime($model->trans_date);
+            $model->status == 1;
+
+            if($model->save()){
+                if(count($product) > 0){
+                    \backend\models\Claimline::deleteAll(['claim_id'=>$id]);
+                    for($i=0;$i<=count($product)-1;$i++){
+                        $modelline = new \backend\models\Claimline();
+                        $modelline->claim_id = $model->id;
+                        $modelline->product_id = $product[$i];
+                        $modelline->problem = $line_cause[$i];
+                        $modelline->qty = $line_qty[$i];
+                        $modelline->sale_ref = $line_ref[$i];
+                        $modelline->status = 1;
+                        $modelline->save();
+                    }
+                }
+            }
+
+            $session = Yii::$app->session;
+            $session->setFlash('msg','บันทึกรายการเรียบร้อย');
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'modelline' => $modelline,
         ]);
     }
 
@@ -172,7 +202,9 @@ class ClaimController extends Controller
                 $modelline = \backend\models\Saleline::find()->select(['sale_id','product_id','qty'])->where(['sale_id'=>$model->id])->all();
                 if($modelline){
                     foreach ($modelline as $value){
-                        array_push($list,['sale_id'=>$value->sale_id,'product_id'=>$value->product_id,
+                        array_push($list,[
+                                                 'sale_id'=>$value->sale_id,
+                                                 'product_id'=>$value->product_id,
                                                  'product_code'=>\backend\models\Product::findProductcode($value->product_id),
                                                  'name'=>\backend\models\Product::findName($value->product_id),
                                                  'qty'=>$value->qty]);
@@ -185,6 +217,32 @@ class ClaimController extends Controller
             }else{
                 return Json::encode($list);
             }
+        }
+    }
+    public function actionConfirmclaim(){
+        $id = \Yii::$app->request->post("id");
+        if($id){
+            $modelline = \backend\models\Claimline::find()->where(['claim_id'=>$id])->all();
+            if($modelline){
+                $data = [];
+                foreach ($modelline as $value){
+                    array_push($data,['product_id'=>$value->product_id,'warehouse_id'=>1,'qty'=>$value->qty,'line_price'=>0,'stock_line_type'=>1]);
+                }
+                $res = \backend\models\Journal::createTrans(\backend\helpers\StockType::TYPE_IN,$data,$id,\backend\helpers\JournalType::TYPE_CLAIM);
+                if($res){
+                    $this->updateClaim($id);
+                    $session = Yii::$app->session;
+                    $session->setFlash('msg','ทำรายการเรียบร้อย');
+                    return $this->redirect(['index']);
+                }
+            }
+        }
+    }
+    public function updateClaim($id){
+        $model = \backend\models\Claim::find()->where(['id'=>$id])->one();
+        if($model){
+            $model->status = 2;
+            $model->save();
         }
     }
 }

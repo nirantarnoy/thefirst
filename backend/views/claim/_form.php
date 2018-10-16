@@ -110,6 +110,40 @@ use yii\helpers\Url;
                                            <i class="fa fa-minus-circle text-danger remove-line" style="cursor: pointer;vertical-align: middle;" onclick="removeline($(this));"></i>
                                        </td>
                                    </tr>
+                            <?php else:?>
+                            <?php
+                                $i = 0;
+                                foreach ($modelline as $value):
+                            ?>
+                                <?php $i+=1; ?>
+                                    <tr>
+                                        <td style="width: 5%;padding-top: 15px;" class="line-no"><?=$i?></td>
+                                        <td style="width: 20%">
+                                            <div class="input-group">
+                                                <input type="text" class="product_code" style="border: none;padding: 5px 5px 5px 5px;width: 100%;background:transparent;text-align: left" name="product_code[]"  placeholder="ค้นหารหัส..." value="<?=\backend\models\Product::findProductCode($value->product_id)?>">
+                                                <input type="hidden" class="product_id" name="product_id[]" value="<?=$value->product_id?>">
+                                                <span class="input-group-btn">
+                                            <div class="btn btn-default btn-search-item" style="border: none;background: transparent;"  onclick="findItem($(this));"><i class="fa fa-search-plus"></i></div>
+                                        </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="text" readonly name="product_name[]" class="form-control product-name" value="<?=\backend\models\Product::findName($value->product_id)?>">
+                                        </td>
+                                        <td>
+                                            <input style="border: none;padding: 5px 5px 5px 5px;width: 100%;background:transparent;text-align: right" type="text" name="line_qty[]" class="form-control line-qty" value="<?=$value->qty?>" onchange="linecal($(this));">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="line_cause[]" class="form-control line-cause" value="<?=$value->problem?>">
+                                        </td>
+                                        <td>
+                                            <input style="border: none;padding: 5px 5px 5px 5px;width: 100%;background:transparent;text-align: left" type="text" readonly name="line_ref[]" class="form-control line-ref" value="<?=$value->sale_ref?>">
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-minus-circle text-danger remove-line" style="cursor: pointer;vertical-align: middle;" onclick="removeline($(this));"></i>
+                                        </td>
+                                    </tr>
+                            <?php endforeach;?>
                         <?php endif;?>
                         </tbody>
                         <tfoot>
@@ -127,6 +161,7 @@ use yii\helpers\Url;
 
             <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-success">
+                <div class="btn btn-primary"> ยืนยันการทำรายการ</div>
             </div>
 
                     <?php ActiveForm::end(); ?>
@@ -201,7 +236,7 @@ $js = <<<JS
                     var html = "<tr><td>niran</td></tr>";
                      for(var i =0;i<=data.length -1;i++){
                         // alert(data[i]['product_code']);
-                         html +="<tr ondblclick='getitem($(this));'><td>"+data[i]['product_code']+"</td><td>"+data[i]['name']+"<input type='hidden' class='recid' value='"+data[i]['sale_id']+"'/></td><td>"+data[i]['qty']+"</td></tr>"
+                         html +="<tr ondblclick='getitem($(this));'><td>"+data[i]['product_code']+"</td><td>"+data[i]['name']+"<input type='hidden' class='recid' value='"+data[i]['sale_id']+"'/><input type='hidden' class='prodid' value='"+data[i]['product_id']+"'/></td><td>"+data[i]['qty']+"</td></tr>"
                  
                      }
                      $("table.table-list").show();
@@ -223,11 +258,12 @@ $js = <<<JS
     var prodname = e.closest("tr").find("td:eq(1)").text();
     var saleid = e.closest("tr").find(".recid").val();
     var line_ref = $(".itemsearch").val();
+    var prodid = e.closest("tr").find(".prodid").val();
     $(".table-line tbody tr").each(function() {
         //alert(prodname);
         if($(this).index() == currow){
               $(this).closest('tr').find(".product_code").val(prodcode);
-              $(this).closest('tr').find(".product_id").val(saleid);
+              $(this).closest('tr').find(".product_id").val(prodid);
               $(this).closest('tr').find(".product-name").val(prodname);
               $(this).closest('tr').find('.line-qty').focus().select();
               $(this).closest('tr').find('.line-ref').val(line_ref);

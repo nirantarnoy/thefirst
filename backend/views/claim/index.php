@@ -100,8 +100,19 @@ if ($session->getFlash('msg')): ?>
                     return date('d-m-Y',$data->trans_date);
                 }
             ],
-            'sale_no',
-            //'status',
+           // 'sale_no',
+            [
+               'attribute' => 'status',
+               'format'=>'html',
+                'value'=>function($data){
+                    if($data->status === 1)
+                    {
+                        return '<div class="label label-success">รอยืนยัน</div>';
+                    }else if($data->status === 2){
+                        return '<div class="label label-primary">เคลมสินค้าสมบูรณ์</div>';
+                    }
+                }
+            ],
             //'created_at',
             //'updated_at',
             //'created_by',

@@ -8,12 +8,14 @@ class JournalType
     const TYPE_SO = 2;
     const TYPE_IMPORT = 3;
     const TYPE_ADJUST = 4;
+    const TYPE_CLAIM = 5;
 
     private static $data = [
         1 => 'Purchase',
         2 => 'Sale',
         3 => 'Import',
         4 => 'Adjust',
+        5 => 'Claim',
 
     ];
 
@@ -22,6 +24,7 @@ class JournalType
         ['id'=>2,'name' => 'Sale'],
         ['id'=>3,'name' => 'Import'],
         ['id'=>4,'name' => 'Adjust'],
+        ['id'=>5,'name' => 'Claim'],
 
     ];
     public static function asArray()
