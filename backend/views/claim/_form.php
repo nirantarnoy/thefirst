@@ -50,20 +50,21 @@ use yii\helpers\Url;
                                         ]
                             ]) ?>
                         </div>
+<!--                        <div class="col-lg-4">-->
+
+                                <?php //echo $form->field($model, 'sale_no',[
+                                   // 'template' => '{label}<div class="input-group">{input}
+                                  //                 <span style="cursor: pointer" class="input-group-addon btn-find" onclick="find_so($(this));"><i class="fa fa-search"></i></span></div>{error}{hint}'
+                        //        ])->label() ?>
+
+<!--                        </div>-->
                         <div class="col-lg-4">
-
-                                <?= $form->field($model, 'sale_no',[
-                                    'template' => '{label}<div class="input-group">{input}
-                                                   <span style="cursor: pointer" class="input-group-addon btn-find" onclick="find_so($(this));"><i class="fa fa-search"></i></span></div>{error}{hint}'
-                                ])->label() ?>
-
+                            <?php //echo $form->field($model, 'status')->widget(Switchery::className(),['options'=>['label'=>'','class'=>'form-control']])->label() ?>
                         </div>
 
                     </div>
             <div class="row">
-                <div class="col-lg-4">
-                    <?php echo $form->field($model, 'status')->widget(Switchery::className(),['options'=>['label'=>'','class'=>'form-control']])->label(false) ?>
-                </div>
+
             </div>
             <br>
             <div class="row">
@@ -72,7 +73,7 @@ use yii\helpers\Url;
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>รหัสสินค้า</th>
+                            <th style="width: 20%">รหัสสินค้า</th>
                             <th>ชื่อ</th>
                             <th>จำนวน</th>
                             <th>สาเหตุ</th>
@@ -80,6 +81,46 @@ use yii\helpers\Url;
                             <th>-</th>
                         </tr>
                         </thead>
+                        <tbody>
+                            <?php if($model->isNewRecord):?>
+                                   <tr>
+                                       <td style="width: 5%;padding-top: 15px;" class="line-no"></td>
+                                       <td style="width: 20%">
+                                           <div class="input-group">
+                                               <input type="text" class="product_code" style="border: none;padding: 5px 5px 5px 5px;width: 100%;background:transparent;text-align: left" name="product_code[]"  placeholder="ค้นหารหัส...">
+                                               <input type="hidden" class="product_id" name="product_id[]" value="">
+                                               <span class="input-group-btn">
+                                            <div class="btn btn-default btn-search-item" style="border: none;background: transparent;"  onclick="findItem($(this));"><i class="fa fa-search-plus"></i></div>
+                                        </span>
+                                           </div>
+                                       </td>
+                                       <td>
+                                           <input type="text" readonly name="product_name[]" class="form-control product-name" value="">
+                                       </td>
+                                       <td>
+                                           <input style="border: none;padding: 5px 5px 5px 5px;width: 100%;background:transparent;text-align: right" type="text" name="line_qty[]" class="form-control line-qty" value="0" onchange="linecal($(this));">
+                                       </td>
+                                       <td>
+                                           <input type="text" name="line_cause[]" class="form-control line-cause" value="">
+                                       </td>
+                                       <td>
+                                           <input style="border: none;padding: 5px 5px 5px 5px;width: 100%;background:transparent;text-align: left" type="text" readonly name="line_ref[]" class="form-control line-ref" value="">
+                                       </td>
+                                       <td>
+                                           <i class="fa fa-minus-circle text-danger remove-line" style="cursor: pointer;vertical-align: middle;" onclick="removeline($(this));"></i>
+                                       </td>
+                                   </tr>
+                        <?php endif;?>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="7">
+                                <?php if($model->status <=1):?>
+                                    <div class="btn btn-default btn-add-line"><i class="fa fa-plus-circle"></i> เพิ่มรายการ </div>
+                                <?php endif;?>
+                            </td>
+                        </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -133,6 +174,20 @@ use yii\helpers\Url;
 $url_to_find = Url::to(['claim/findso'],true);
 $js = <<<JS
  $(function() {
+     linenum();
+      $(".btn-add-line").click(function() {
+       var tr = $(".table-line tbody tr:first");
+       if(tr.closest("tr").find(".product_code").val()== "" || tr.closest("tr").find(".line-qty").val()== "0")return;
+       var clone = tr.clone();
+       clone.closest("tr").find(".product_code").val("");
+       clone.closest("tr").find(".product-name").val("");
+       clone.closest("tr").find(".line-qty").val("0");
+       clone.closest("tr").find(".line-cause").val("");
+       clone.closest("tr").find(".line-ref").val("");
+    
+       tr.after(clone);
+       linenum();
+    });
     $(".itemsearch").change(function() {
         var txt = $(this).val();
         $.ajax({
@@ -163,19 +218,48 @@ $js = <<<JS
     $("#findModal").modal("show");
  }
   function getitem(e) {
+    
     var prodcode = e.closest("tr").find("td:eq(0)").text();
     var prodname = e.closest("tr").find("td:eq(1)").text();
     var saleid = e.closest("tr").find(".recid").val();
-    $(".table-item tbody tr").each(function() {
-        //alert('niran');
+    var line_ref = $(".itemsearch").val();
+    $(".table-line tbody tr").each(function() {
+        //alert(prodname);
         if($(this).index() == currow){
               $(this).closest('tr').find(".product_code").val(prodcode);
-              $(this).closest('tr').find(".product_id").val(prodid);
+              $(this).closest('tr').find(".product_id").val(saleid);
               $(this).closest('tr').find(".product-name").val(prodname);
               $(this).closest('tr').find('.line-qty').focus().select();
+              $(this).closest('tr').find('.line-ref').val(line_ref);
         }
     });
     $("#findModal").modal("hide");
+  }
+  function linenum() {
+      var nums = 0;
+     $(".table-line tbody tr").each(function() {
+         nums+=1;
+      $(this).closest('tr').find('.line-no').text(nums);
+        
+    });
+  }
+  function findItem(e) {
+      currow = e.parent().parent().parent().parent().index();
+     // alert(currow);
+      $("#findModal").modal("show");
+  }
+  function removeline(e) {
+    if(confirm("ต้องการลบรายการนี้ใช่หรือ")){
+          var cnt = $("table.table-line tbody tr").length;
+          if(cnt == 1){
+              $("table.table-line tbody tr").each(function(){
+                  
+              });
+          }else{
+               e.parent().parent().remove();
+          }
+          
+    }
   }
 JS;
 

@@ -70,8 +70,28 @@ class ClaimController extends Controller
     {
         $model = new Claim();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+
+            $product = \Yii::$app->request->post('product_id');
+            $product_name = \Yii::$app->request->post('product_name');
+            $line_qty = \Yii::$app->request->post('line_qty');
+            $line_cause = \Yii::$app->request->post('line_cause');
+            $line_ref = \Yii::$app->request->post('line_ref');
+
+            if($model->save()){
+                if(count($product) > 0){
+                    for($i=0;$i<=count($product)-1;$i++){
+                        $modelline = new \common\models\ClaimLine();
+                        $modelline->claim_id = $model->id;
+                        $modelline->product_id = $product[$i];
+                        $modelline->problem = $line_cause[$i];
+                    }
+                }
+            }
+
+            $session = Yii::$app->session;
+            $session->setFlash('msg','บันทึกรายการเรียบร้อย');
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [

@@ -521,6 +521,7 @@ $js=<<<JS
   }
   function removeline(e) {
     if(confirm("ต้องการลบรายการนี้ใช่หรือ")){
+      
         e.parent().parent().remove();
     }
   }
