@@ -276,10 +276,17 @@ class SiteController extends Controller
     public function actionResetpassword(){
         $model=new \backend\models\Resetform();
         if($model->load(Yii::$app->request->post())){
-            $model_user = \backend\models\User::find()->where(['id'=>Yii::$app->user->id])->one();
-            $model_user->setPassword($model->confirmpw);
-            $model_user->save();
-            return $this->redirect(['site/index']);
+
+                $model_user = \backend\models\User::find()->where(['id'=>Yii::$app->user->id])->one();
+            if($model_user->validatePassword($model->oldpw)){
+                $model_user->setPassword($model->confirmpw);
+                $model_user->save();
+                return $this->redirect(['site/index']);
+            }else{
+                $session = Yii::$app->session;
+                $session->setFlash('msg_err','รหัสผ่านเดิมไม่ถูกต้อง');
+            }
+
         }
         return $this->render('_setpassword',[
             'model'=>$model
