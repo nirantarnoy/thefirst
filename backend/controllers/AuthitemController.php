@@ -387,6 +387,8 @@ class AuthitemController extends Controller
         $auth->add($sale_confirm);
         $sale_finditem = $auth->createPermission('sale/finditem');
         $auth->add($sale_finditem);
+        $sale_printbill = $auth->createPermission('sale/printbill');
+        $auth->add($sale_printbill);
 
         $sale_permission = $auth->createPermission('salemodule');
         $sale_permission->description = "สิทธิ์ใช้งานโมดูล sale";
@@ -402,6 +404,7 @@ class AuthitemController extends Controller
         $auth->addChild($sale_permission,$sale_cancel);
         $auth->addChild($sale_permission,$sale_confirm);
         $auth->addChild($sale_permission,$sale_finditem);
+        $auth->addChild($sale_permission,$sale_printbill);
 
         $manage_sale = $auth->createRole('Manage sale');
         $manage_sale->description = "Manage product issue";
@@ -549,8 +552,8 @@ class AuthitemController extends Controller
 
 
 
-//        $auth->assign($admin_role,17);
-//        $auth->assign($user_role,19);
+        $auth->assign($admin_role,1);
+        $auth->assign($user_role,19);
 
 
 

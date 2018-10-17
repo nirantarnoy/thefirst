@@ -107,10 +107,13 @@ class SaleController extends Controller
             $line_total = \Yii::$app->request->post('line_total');
 
             $model->trans_date = strtotime($model->trans_date);
+
             $model->status = 1;
             if($model->save()){
                 if(count($product)>0){
+                    $total_sale = 0;
                     for($i=0;$i<=count($product)-1;$i++){
+                        $total_sale = $total_sale + (float)$line_total[$i];
                         $modelline = new \backend\models\Saleline();
                         $modelline->sale_id = $model->id;
                         $modelline->product_id = $product[$i];
@@ -121,6 +124,11 @@ class SaleController extends Controller
                         $modelline->save(false);
                     }
                 }
+                $modelupdate_total = \backend\models\Sale::find()->where(['id'=>$model->id])->one();
+                $modelupdate_total->sale_total = $total_sale;
+                $modelupdate_total->sale_total_text = $this->numtothai($total_sale);
+                $modelupdate_total->save();
+
                 $session = Yii::$app->session;
                 $session->setFlash('msg','บันทึกรายการเรียบร้อย');
                 return $this->redirect(['index']);
@@ -155,8 +163,11 @@ class SaleController extends Controller
             $model->trans_date = strtotime($model->trans_date);
             if($model->save()){
                 if(count($product)>0){
+                    $total_sale = 0;
                     \backend\models\Saleline::deleteAll(['sale_id'=>$model->id]);
                     for($i=0;$i<=count($product)-1;$i++){
+
+                        $total_sale = $total_sale + (float)$line_total[$i];
                         $modelchk = \backend\models\Saleline::find()->where(['sale_id'=>$model->id,'product_id'=>$product[$i]])->one();
                         if($modelchk){
                             $modelchk->qty = (float)$line_qty[$i];
@@ -179,6 +190,11 @@ class SaleController extends Controller
 
                     }
                 }
+                $modelupdate_total = \backend\models\Sale::find()->where(['id'=>$model->id])->one();
+                $modelupdate_total->sale_total = $total_sale;
+                $modelupdate_total->sale_total_text = $this->numtothai((float)$total_sale);
+                $modelupdate_total->save();
+
                 $session = Yii::$app->session;
                 $session->setFlash('msg','บันทึกรายการเรียบร้อย');
                 return $this->redirect(['index']);
@@ -377,5 +393,51 @@ class SaleController extends Controller
 
             }
         }
+    }
+    public function numtothaistring($num)
+    {
+        $return_str = "";
+        $txtnum1 = array('','หนึ่ง','สอง','สาม','สี่','ห้า','หก','เจ็ด','แปด','เก้า');
+        $txtnum2 = array('','สิบ','ร้อย','พัน','หมื่น','แสน','ล้าน');
+        $num_arr = str_split($num);
+        $count = count($num_arr);
+        foreach($num_arr as $key=>$val)
+        {
+            // echo $count." ".$val." ".$key."</br>";
+            if($count > 1 && $val == 1 && $key ==($count-1)) {
+                $return_str .= "เอ็ด";
+            }else if($count > 1 && $val == 1 && $key == 2) {
+                $return_str .= $txtnum2[$val];
+            }else if($count > 1 && $val == 2 && $key ==($count-2)){
+                $return_str .="ยี่".$txtnum2[$count-$key-1];
+            }else if($count > 1 && $val ==0){}
+            else{
+                $return_str .= $txtnum1[$val].$txtnum2[$count-$key-1];
+            }
+
+        }
+        return $return_str ;
+    }
+    public function numtothai($num)
+    {
+        $return = "";
+        $num = str_replace(",","",$num);
+        $number = explode(".",$num);
+        if(sizeof($number)>2){
+            return 'รูปแบบข้อมุลไม่ถูกต้อง';
+            exit;
+        }else if(sizeof($number)==1){
+            $number[1]=0;
+        }
+        // return $number[0];
+        $return .= $this->numtothaistring($number[0])."บาท";
+
+        $stang = intval($number[1]);
+        // return $stang;
+        if($stang > 0)
+            $return.= $this->numtothaistring($stang)."สตางค์";
+        else
+            $return .= "ถ้วน";
+        return $return ;
     }
 }
