@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Claim */
 
-$this->title = $model->id;
+$this->title = $model->claim_no;
 $this->params['breadcrumbs'][] = ['label' => 'เคลมสินค้า', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -29,13 +29,32 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
            // 'id',
             'claim_no',
-            'trans_date',
+            [
+                    'attribute'=>'trans_date',
+                    'value'=>function($data){
+                        return date('d-m-Y',$data->trans_date);
+                    }
+            ],
             'sale_no',
-            'status',
-            'created_at',
-            'updated_at',
-            'created_by',
-            'updated_by',
+            [
+                'attribute' => 'status',
+                'format'=>'html',
+                'value'=>function($data){
+                    if($data->status === 1)
+                    {
+                        return '<div class="label label-success">รอยืนยัน</div>';
+                    }else if($data->status === 2){
+                        return '<div class="label label-primary">เคลมสินค้าสมบูรณ์</div>';
+                    }
+                }
+            ],
+            [
+                'attribute'=>'created_at',
+                'value'=>function($data){
+                    return date('d-m-Y',$data->created_at);
+                }
+            ],
+
         ],
     ]) ?>
 

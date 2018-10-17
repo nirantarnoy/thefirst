@@ -141,7 +141,7 @@ if ($session->getFlash('msg')): ?>
                             'data-pjax' => '0',
                             'id'=>'modaledit',
                         ]);
-                        return $data->status != 100? Html::a(
+                        return $data->status != 2? Html::a(
                             '<span class="glyphicon glyphicon-pencil btn btn-xs btn-default"></span>', $url, [
                             'id' => 'activity-view-link',
                             //'data-toggle' => 'modal',

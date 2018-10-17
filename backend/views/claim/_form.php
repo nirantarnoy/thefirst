@@ -160,8 +160,11 @@ use yii\helpers\Url;
             </div>
 
             <div class="form-group">
+
+                <?php if($model->status !=2):?>
                     <input type="submit" value="Save" class="btn btn-success">
                 <div class="btn btn-primary btn-confirm-claim"> ยืนยันการทำรายการ</div>
+                <?php endif;?>
             </div>
 
                     <?php ActiveForm::end(); ?>
