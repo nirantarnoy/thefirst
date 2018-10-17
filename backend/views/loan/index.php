@@ -49,8 +49,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="panel panel-headline">
         <div class="panel-heading">
-            <div class="btn-group"><?= Html::a(Yii::t('app', '<i class="fa fa-plus"></i> สร้าง'), ['create'], ['class' => 'btn btn-success']) ?></div>
-            <h4 class="pull-right"><?=$this->title?> <i class="fa fa-institution"></i><small></small></h4>
+<!--            <div class="btn-group">--><?php //echo Html::a(Yii::t('app', '<i class="fa fa-plus"></i> สร้าง'), ['create'], ['class' => 'btn btn-success']) ?><!--</div>-->
+            <h4 class=""><i class="fa fa-list-ol"></i> <?=$this->title?> <small></small></h4>
         </div>
         <div class="panel-body">
             <div class="x_panel">

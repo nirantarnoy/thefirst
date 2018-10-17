@@ -339,7 +339,8 @@ class SaleController extends Controller
             $bill_total = 0;
             if($model){
                 $shop = \backend\models\Plant::find()->one();
-                $modeladdress = \backend\models\AddressBook::find()->where(['party_id'=>1])->one();
+               // $modeladdress = \backend\models\AddressBook::find()->where(['party_id'=>1])->one();
+                $modeladdress = \backend\models\AddressBook::findAddress($model->customer_id);
                 $modelline = \backend\models\Saleline::find()->where(['sale_id'=>$id])->all();
 
                 if($modelline){

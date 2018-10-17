@@ -69,9 +69,13 @@ class CustomerController extends Controller
     public function actionCreate()
     {
         $model = new Customer();
-
-        if ($model->load(Yii::$app->request->post())) {
+        $model_address = new AddressBook();
+        if ($model->load(Yii::$app->request->post() && $model_address->load(Yii::$app->request->post()))) {
             if($model->save()){
+                $model_address->party_type_id = 2;
+                $model_address->party_id = $model->id;
+                $model_address->save(false);
+
                 $session = Yii::$app->session;
                 $session->setFlash('msg','บันทึกรายการเรียบร้อย');
                 return $this->redirect(['index']);
@@ -80,6 +84,7 @@ class CustomerController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'model_address'=>$model_address,
         ]);
     }
 
@@ -93,9 +98,14 @@ class CustomerController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post())) {
+        $model_address_plant = \backend\models\AddressBook::find()->where(['party_id'=>$id,'party_type_id'=>2])->one();
+        $model_address = new \backend\models\AddressBook();
+        if ($model->load(Yii::$app->request->post()) && $model_address->load(Yii::$app->request->post())) {
             if($model->save()){
+                \backend\models\AddressBook::deleteAll(['party_id'=>$id,'party_type_id'=>2]);
+                $model_address->party_type_id = 2;
+                $model_address->party_id = $model->id;
+                $model_address->save(false);
                 $session = Yii::$app->session;
                 $session->setFlash('msg','บันทึกรายการเรียบร้อย');
                 return $this->redirect(['index']);
@@ -104,6 +114,8 @@ class CustomerController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'model_address'=>$model_address,
+            'model_address_plant'=>$model_address_plant,
         ]);
     }
 

@@ -226,6 +226,12 @@ class AuthitemController extends Controller
         $auth->add($plant_view);
         $plant_create = $auth->createPermission('plant/create');
         $auth->add($plant_create);
+        $plant_showcity = $auth->createPermission('plant/showcity');
+        $auth->add($plant_showcity);
+        $plant_showdistrict = $auth->createPermission('plant/showdistrict');
+        $auth->add($plant_showdistrict);
+        $plant_showzipcode = $auth->createPermission('plant/showzipcode');
+        $auth->add($plant_showzipcode);
 
         $plant_permission = $auth->createPermission('plantmodule');
         $plant_permission->description = "สิทธิ์ใช้งานโมดูล Plant";
@@ -236,6 +242,9 @@ class AuthitemController extends Controller
         $auth->addChild($plant_permission,$plant_update);
         $auth->addChild($plant_permission,$plant_delete);
         $auth->addChild($plant_permission,$plant_create);
+        $auth->addChild($plant_permission,$plant_showcity);
+        $auth->addChild($plant_permission,$plant_showdistrict);
+        $auth->addChild($plant_permission,$plant_showzipcode);
 
         $manage_plant = $auth->createRole('Manage Plant');
         $manage_plant->description = "Manage plant";
@@ -364,6 +373,39 @@ class AuthitemController extends Controller
         $auth->add($manage_purch);
         $auth->addChild($manage_purch,$purch_permission);
 
+
+        // loan module
+        $loan_index = $auth->createPermission('loan/index');
+        $auth->add($loan_index);
+        $loan_update = $auth->createPermission('loan/update');
+        $auth->add($loan_update);
+        $loan_delete = $auth->createPermission('loan/delete');
+        $auth->add($loan_delete);
+        $loan_view = $auth->createPermission('loan/view');
+        $auth->add($loan_view);
+        $loan_payment = $auth->createPermission('loan/payment');
+        $auth->add($loan_payment);
+        $loan_paymentsubmit = $auth->createPermission('loan/paymentsubmit');
+        $auth->add($loan_paymentsubmit);
+        $loan_postpone = $auth->createPermission('loan/postpone');
+        $auth->add($loan_postpone);
+
+        $loan_permission = $auth->createPermission('loanmodule');
+        $loan_permission->description = "สิทธิ์ใช้งานโมดูล loan";
+        $auth->add($loan_permission);
+
+        $auth->addChild($loan_permission,$loan_index);
+        $auth->addChild($loan_permission,$loan_view);
+        $auth->addChild($loan_permission,$loan_update);
+        $auth->addChild($loan_permission,$loan_delete);
+        $auth->addChild($loan_permission,$loan_payment);
+        $auth->addChild($loan_permission,$loan_paymentsubmit);
+        $auth->addChild($loan_permission,$loan_postpone);
+
+        $manage_loan = $auth->createRole('Manage loan');
+        $manage_loan->description = "Manage product received";
+        $auth->add($manage_loan);
+        $auth->addChild($manage_loan,$loan_permission);
 
 
         //prodissue module
@@ -537,6 +579,7 @@ class AuthitemController extends Controller
         $auth->addChild($admin_role,$manage_usergroup);
         $auth->addChild($admin_role,$manage_product);
         $auth->addChild($admin_role,$manage_purch);
+        $auth->addChild($admin_role,$manage_loan);
         $auth->addChild($admin_role,$manage_sale);
         $auth->addChild($admin_role,$manage_employee);
         $auth->addChild($admin_role,$manage_message);

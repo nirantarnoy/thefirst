@@ -37,9 +37,10 @@
 
             </tr>
             <tr >
-                <td colspan="2" style="border: none;font-size: 14px;font-weight: bold">ที่อยู่จัดส่ง</td>
-                <td style="border: none;font-size: 18px;font-weight: bold"></td>
-                <td style="border: none;font-size: 18px;font-weight: bold"></td>
+                <td colspan="1" style="border: none;font-size: 14px;font-weight: bold">ที่อยู่จัดส่ง</td>
+                <td colspan="4" style="border: none;font-size: 14px;font-weight: normal">
+                    <?=$modeladdress?>
+                </td>
             </tr> <br> <br>
             </thead>
             <tbody style="top: 10px;">

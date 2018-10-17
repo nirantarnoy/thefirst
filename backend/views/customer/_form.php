@@ -5,9 +5,12 @@ use yii\widgets\ActiveForm;
 use toxor88\switchery\Switchery;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
-/* @var $this yii\web\View */
-/* @var $model backend\models\Customer */
-/* @var $form yii\widgets\ActiveForm */
+use yii\helpers\Url;
+
+$prov = \common\models\Province::find()->all();
+$amp = \common\models\Amphur::find()->all();
+$dist = \common\models\District::find()->all();
+
 ?>
 
 <div class="panel panel-headline">
@@ -102,6 +105,102 @@ use yii\helpers\ArrayHelper;
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
                     <?php echo $form->field($model, 'status')->widget(Switchery::className(),['options'=>['label'=>'','class'=>'form-control']])->label(false) ?>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group" style="margin-top: -10px">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"><?=Yii::t('app','ที่อยู่')?>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <?= $form->field($model_address_plant?$model_address_plant:$model_address, 'address')->textarea(['maxlength' => true,'class'=>'form-control'])->label(false) ?>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: -10px">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"><?=Yii::t('app','ถนน')?>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <?= $form->field($model_address_plant?$model_address_plant:$model_address, 'street')->textInput(['maxlength' => true,'class'=>'form-control'])->label(false) ?>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: -10px">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"><?=Yii::t('app','ตำบล')?>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <?= $form->field($model_address_plant?$model_address_plant:$model_address, 'district_id')->widget(Select2::className(),
+                                [
+                                    'data'=> ArrayHelper::map($dist,'DISTRICT_ID','DISTRICT_NAME'),
+                                    'options'=>['maxlength' => true,'class'=>'form-control form-inline','id'=>'district','disabled'=>'disabled'],
+                                ]
+
+                            )->label(false) ?>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: -10px">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"><?=Yii::t('app','อำเภอ')?>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+
+                            <?= $form->field($model_address_plant?$model_address_plant:$model_address, 'city_id')->widget(Select2::className(),
+                                [
+                                    'data'=> ArrayHelper::map($amp,'AMPHUR_ID','AMPHUR_NAME'),
+                                    'options'=>['maxlength' => true,'class'=>'form-control form-inline','id'=>'city','disabled'=>'disabled',
+                                        'onchange'=>'
+                                          $.post("'.Url::to(['plant/showdistrict'],true).'"+"&id="+$(this).val(),function(data){
+                                          $("select#district").html(data);
+                                          $("select#district").prop("disabled","");
+
+                                        });
+                                           $.post("'.Url::to(['plant/showzipcode'],true).'"+"&id="+$(this).val(),function(data){
+                                                $("#zipcode").val(data);
+                                              });
+                                       '
+                                    ],
+                                    'pluginOptions'=>[
+                                        'allowClear'=>true,
+                                    ]
+                                ]
+
+                            )->label(false) ?>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: -10px">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"><?=Yii::t('app','จังหวัด')?>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+
+                            <?= $form->field($model_address_plant?$model_address_plant:$model_address, 'province_id')->widget(Select2::className(),
+                                [
+                                    'data'=> ArrayHelper::map($prov,'PROVINCE_ID','PROVINCE_NAME'),
+                                    'options'=>['maxlength' => true,'class'=>'form-control form-inline','id'=>'province',
+                                        'onchange'=>'
+                                          $.post("'.Url::to(['plant/showcity'],true).'"+"&id="+$(this).val(),function(data){
+                                          $("select#city").html(data);
+                                          $("select#city").prop("disabled","");
+
+                                        });
+                                       '
+                                    ],
+                                ]
+
+                            )->label(false) ?>
+
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: -10px">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"><?=Yii::t('app','รหัสไปรษณีย์')?>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <?php if($model_address_plant):?>
+                                <?= $form->field($model_address_plant, 'zipcode')->textInput(['class'=>'form-control','id'=>'zipcode','style'=>'width: 20%;','readonly'=>'readonly'])->label(false) ?>
+                            <?php else:?>
+                                <?= $form->field($model_address, 'zipcode')->textInput(['class'=>'form-control','id'=>'zipcode','style'=>'width: 20%;','readonly'=>'readonly'])->label(false) ?>
+                            <?php endif;?>
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
