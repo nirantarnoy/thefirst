@@ -202,15 +202,16 @@ class SiteController extends Controller
         $list = [];
         if($model){
             $date1 = "";
-            $date2 ="";
+            $date2 = "";
             foreach($model as $value){
                 if($daytype == 1){
-                    $date1 = date('d-m-Y',$model->next_pay_date);
+                    if($value->next_pay_date != ''){
+                        $date1 = date('d-m-Y',$value->next_pay_date);
+                    }
                 }else{
                     if(!empty($model->append_date)){
-                        $date1 = date('d-m-Y',$model->append_date);
+                        $date1 = date('d-m-Y',$value->append_date);
                     }
-
                 }
 
                 $date2 =date('d-m-Y');
