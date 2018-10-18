@@ -55,7 +55,7 @@ $last_message = \backend\models\Message::find()->where(['status'=>1])->limit(6)-
     <body>
     <div id="wrapper">
     <!-- NAVBAR -->
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav id="main-nav" class="navbar navbar-default navbar-fixed-top">
         <div class="brand">
 <!--            <a href="index.html"><img src="img/aj.png" alt="Klorofil Logo" class="img-responsive logo"></a>-->
             <a href="index.html">THE FIRST</a>
@@ -100,7 +100,7 @@ $last_message = \backend\models\Message::find()->where(['status'=>1])->limit(6)-
 <!--                            <li><a href="#">Troubleshooting</a></li>-->
 <!--                        </ul>-->
 <!--                    </li>-->
-                    <li class="dropdown">
+                    <li id="li-nav" class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span><?=\backend\models\User::findName(Yii::$app->user->id);?></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
                         <ul class="dropdown-menu">
                             <li><a href="index.php?r=site/resetpassword"><i class="fa fa-refresh"></i> <span>เปลี่ยนรหัสผ่าน</span></a></li>

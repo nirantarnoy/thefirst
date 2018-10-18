@@ -82,8 +82,8 @@ table.table-vendor td{
             ]
         ]); ?> 
         <?php endif; ?>
-  
-   <?php Pjax::begin(); ?>
+
+   <?php Pjax::begin(['id'=>'pjax_product']); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
      <div class="row">
       <div class="col-lg-12">
@@ -128,23 +128,24 @@ table.table-vendor td{
                             <div class="form-inline">
                               
                                 <input type="text" class="form-control search_all" name="search_all" value="<?=$searchname;?>" placeholder="ค้นหารหัส,ชื่อ">
-                                <?php      
+                                <?php
                                       echo MultiSelect::widget([
-                                              'id'=>"product_group",
-                                              'name'=>'product_group[]',
-                                              //'model'=>null,
+                                              'id'=>"product_groups",
+                                              'name'=>'product_groups[]',
+                                              'model'=>null,
                                               "options" => ['multiple'=>"multiple",
                                                               'onchange'=>''], // for the actual multiselect
-                                              'data' => count($groupall)==0?['ไม่มีข้อมูล']:ArrayHelper::map($groupall,'id','name'), // data as array
-                                              'value' => $group, // if preselected
-                                              "clientOptions" => 
+                                         // 'data' => count($groupall)==0?['ไม่มีข้อมูล']:ArrayHelper::map($groupall,'id','name'), // data as array
+                                          'data' => ['id'=>0,'name'=>'niran'] , // data as array
+                                          'value' => $group, // if preselected
+                                              "clientOptions" =>
                                                   [
                                                       "includeSelectAllOption" => true,
                                                       'numberDisplayed' => 5,
                                                       'nonSelectedText'=>'กลุ่มสินค้า',
-                                                      'enableFiltering' => true,
-                                                      'enableCaseInsensitiveFiltering'=>true,
-                                                  ], 
+                                                     // 'enableFiltering' => true,
+                                                      //'enableCaseInsensitiveFiltering'=>true,
+                                                  ],
                                   ]); ?>
                                  
                                 <input type="hidden" name="perpage" value="<?=$perpage?>">
@@ -198,6 +199,7 @@ table.table-vendor td{
                         'bordered'=>false,
                         'striped' => false,
                         'hover' => true,
+                        'options' => ['id'=>'grid_product'],
                         //'tableOptions' => ['class' => 'table table-hover'],
                         'emptyText' => '<div style="color: red;align: center;"> <b>ไม่พบรายการไดๆ</b></div>',
                         'rowOptions' => function($model, $key, $index, $gird){
@@ -325,6 +327,25 @@ table.table-vendor td{
                                                       ],
 
                         ],
+//                        'toolbar' => [
+//                            [
+//                                'content'=>
+//                                    Html::button('<i class="glyphicon glyphicon-plus"></i>', [
+//                                        'type'=>'button',
+//                                        'title'=>Yii::t('app', 'Add Book'),
+//                                        'class'=>'btn btn-success'
+//                                    ]) . ' '.
+//                                    Html::a('<i class="fas fa-redo"></i>', ['grid-demo'], [
+//                                        'class' => 'btn btn-secondary',
+//                                        'title' => Yii::t('app', 'Reset Grid')
+//                                    ]),
+//                                'options' => ['class' => 'btn-group-sm']
+//                            ],
+//                            '{export}',
+//                            '{toggleData}'
+//                        ],
+//                        'toggleDataContainer' => ['class' => 'btn-group-sm'],
+//                        'exportContainer' => ['class' => 'btn-group-sm']
                     ]); ?>
                     </div>
 
