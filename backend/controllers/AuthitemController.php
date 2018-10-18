@@ -587,6 +587,30 @@ class AuthitemController extends Controller
         $auth->add($manage_warehouse);
         $auth->addChild($manage_warehouse,$warehouse_permission);
 
+        //report module
+        $report_index = $auth->createPermission('report/index');
+        $auth->add($report_index);
+//        $warehouse_update = $auth->createPermission('warehouse/update');
+//        $auth->add($warehouse_update);
+//        $warehouse_delete = $auth->createPermission('warehouse/delete');
+//        $auth->add($warehouse_delete);
+//        $warehouse_view = $auth->createPermission('warehouse/view');
+//        $auth->add($warehouse_view);
+//        $warehouse_create = $auth->createPermission('warehouse/create');
+//        $auth->add($warehouse_create);
+
+        $report_permission = $auth->createPermission('report module');
+        $report_permission->description = "สิทธิ์ใช้งานโมดูล warehouse";
+        $auth->add($report_permission);
+
+        $auth->addChild($warehouse_permission,$report_index);
+
+
+        $manage_report = $auth->createRole('Manage report');
+        $manage_report->description = "Manage report";
+        $auth->add($manage_report);
+        $auth->addChild($manage_report,$report_permission);
+
 
 
 
