@@ -122,26 +122,31 @@ $last_message = \backend\models\Message::find()->where(['status'=>1])->limit(6)-
             <nav>
                 <ul class="nav">
                     <li><a href="index.php?r=site/index" class="site"><i class="fa fa-dashboard"></i> <span>แดซบอร์ด</span></a></li>
-                    <li><a href="index.php?r=plant/index" class="plant"><i class="lnr lnr-code"></i> <span>ข้อมูลร้าน</span></a></li>
-                    <li class="has-sub">
-                        <a href="#subUser" data-toggle="collapse" class="collapsed usect"><i class="fa fa-users"></i> <span>ข้อมูลผู้ใช้</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-                        <div id="subUser" class="collapse ">
-                            <ul class="nav">
-                                <li><a href="index.php?r=usergroup/index" class="usergroup">กลุ่มผู้ใช้</a></li>
-                                <li><a href="index.php?r=user/index" class="user">ผู้ใช้งาน</a></li>
-                                <li><a href="index.php?r=authitem/index" class="authitem">สิทธิ์การใช้งาน</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="has-sub">
-                        <a href="#subSuplier" data-toggle="collapse" class="collapsed"><i class="fa fa-file-code-o"></i> <span>ข้อมูลผู้ขาย</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-                        <div id="subSuplier" class="collapse ">
-                            <ul class="nav">
-                                <li><a href="index.php?r=supliergroup/index" class="supliergroup">กลุ่มผู้ขาย</a></li>
-                                <li><a href="index.php?r=suplier/index" class="suplier">รหัสผู้ขาย</a></li>
-                            </ul>
-                        </div>
-                    </li>
+                    <?php if(\Yii::$app->user->can('Manage plant')):?>
+                     <li><a href="index.php?r=plant/index" class="plant"><i class="lnr lnr-code"></i> <span>ข้อมูลร้าน</span></a></li>
+                    <?php endif;?>
+                    <?php if(\Yii::$app->user->can('Manage usergroup')):?>
+                        <li class="has-sub">
+                            <a href="#subUser" data-toggle="collapse" class="collapsed usect"><i class="fa fa-users"></i> <span>ข้อมูลผู้ใช้</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                            <div id="subUser" class="collapse ">
+                                <ul class="nav">
+                                    <li><a href="index.php?r=usergroup/index" class="usergroup">กลุ่มผู้ใช้</a></li>
+                                    <li><a href="index.php?r=user/index" class="user">ผู้ใช้งาน</a></li>
+                                    <li><a href="index.php?r=authitem/index" class="authitem">สิทธิ์การใช้งาน</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    <?php endif;?>
+                        <li class="has-sub">
+                            <a href="#subSuplier" data-toggle="collapse" class="collapsed"><i class="fa fa-file-code-o"></i> <span>ข้อมูลผู้ขาย</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                            <div id="subSuplier" class="collapse ">
+                                <ul class="nav">
+                                    <li><a href="index.php?r=supliergroup/index" class="supliergroup">กลุ่มผู้ขาย</a></li>
+                                    <li><a href="index.php?r=suplier/index" class="suplier">รหัสผู้ขาย</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
                     <li class="has-sub">
                         <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>ข้อมูลลูกค้า</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
                         <div id="subPages" class="collapse ">
@@ -151,25 +156,37 @@ $last_message = \backend\models\Message::find()->where(['status'=>1])->limit(6)-
                             </ul>
                         </div>
                     </li>
-                    <li class="has-sub">
-                        <a href="#subProduct" data-toggle="collapse" class="collapsed"><i class="fa fa-cubes"></i> <span>ข้อมูลสินค้า</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-                        <div id="subProduct" class="collapse ">
-                            <ul class="nav">
-                                <li><a href="index.php?r=productcat/index" class="productcat">กลุ่มสินค้า</a></li>
-                                <li><a href="index.php?r=product/index" class="product">สินค้า</a></li>
-                                <li><a href="index.php?r=unit/index" class="unit">หน่วยนับ</a></li>
-                                <li><a href="index.php?r=warehouse/index" class="warehouse">คลังสินค้า</a></li>
-<!--                                <li><a href="index.php?r=location/index" class="location">ล๊อก</a></li>-->
-                                <li><a href="index.php?r=stockbalance/index" class="stockbalance">สต๊อกสินค้า</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li><a href="index.php?r=purch/index" class="purch"><i class="fa fa-shopping-cart"></i> <span>ซื้อสินค้า</span></a></li>
-                    <li><a href="index.php?r=sale/index" class="sale"><i class="fa fa-diamond"></i> <span>ขายสินค้า</span></a></li>
-                    <li><a href="index.php?r=claim/index" class="claim"><i class="fa fa-bolt"></i> <span>เคลมสินค้า</span></a></li>
-                    <li><a href="index.php?r=loan/index" class="loan"><i class="fa fa-list-alt"></i> <span>สินเชื่อ/ผ่อน</span></a></li>
-                    <li><a href="index.php?r=message/index" class="message"><i class="fa fa-comment-o"></i> <span>แจ้งเตือน</span></a></li>
-                    <li><a href="index.php?r=report/index" class="report"><i class="fa fa-area-chart"></i> <span>รายงาน</span></a></li>
+                    <?php if(\Yii::$app->user->can('Manage product')):?>
+                        <li class="has-sub">
+                            <a href="#subProduct" data-toggle="collapse" class="collapsed"><i class="fa fa-cubes"></i> <span>ข้อมูลสินค้า</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                            <div id="subProduct" class="collapse ">
+                                <ul class="nav">
+                                    <li><a href="index.php?r=productcat/index" class="productcat">กลุ่มสินค้า</a></li>
+                                    <li><a href="index.php?r=product/index" class="product">สินค้า</a></li>
+                                    <li><a href="index.php?r=unit/index" class="unit">หน่วยนับ</a></li>
+                                    <li><a href="index.php?r=warehouse/index" class="warehouse">คลังสินค้า</a></li>
+    <!--                                <li><a href="index.php?r=location/index" class="location">ล๊อก</a></li>-->
+                                    <li><a href="index.php?r=stockbalance/index" class="stockbalance">สต๊อกสินค้า</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    <?php endif;?>
+                    <?php if(\Yii::$app->user->can('Manage purchase')):?>
+                        <li><a href="index.php?r=purch/index" class="purch"><i class="fa fa-shopping-cart"></i> <span>ซื้อสินค้า</span></a></li>
+                    <?php endif;?>
+                    <?php if(\Yii::$app->user->can('Manage sale')):?>
+                        <li><a href="index.php?r=sale/index" class="sale"><i class="fa fa-diamond"></i> <span>ขายสินค้า</span></a></li>
+                    <?php endif;?>
+                    <?php if(\Yii::$app->user->can('Manage claim')):?>
+                        <li><a href="index.php?r=claim/index" class="claim"><i class="fa fa-bolt"></i> <span>เคลมสินค้า</span></a></li>
+                    <?php endif;?>
+                    <?php if(\Yii::$app->user->can('Manage loan')):?>
+                        <li><a href="index.php?r=loan/index" class="loan"><i class="fa fa-list-alt"></i> <span>สินเชื่อ/ผ่อน</span></a></li>
+                    <?php endif;?>
+                    <?php if(\Yii::$app->user->can('Manage message')):?>
+                        <li><a href="index.php?r=message/index" class="message"><i class="fa fa-comment-o"></i> <span>แจ้งเตือน</span></a></li>
+                    <?php endif;?>
+                       <li><a href="index.php?r=report/index" class="report"><i class="fa fa-area-chart"></i> <span>รายงาน</span></a></li>
                 </ul>
             </nav>
         </div>

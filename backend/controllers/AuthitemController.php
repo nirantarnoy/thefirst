@@ -469,6 +469,11 @@ class AuthitemController extends Controller
         $auth->add($manage_sale);
         $auth->addChild($manage_sale,$sale_permission);
 
+        $manage_sale_operator = $auth->createRole('Sale operator');
+        $manage_sale_operator->description = "Sale operator";
+        $auth->add($manage_sale_operator);
+        $auth->addChild($manage_sale_operator,$sale_clerk_permission);
+
 
         //employee module
         $employee_index = $auth->createPermission('employee/index');
@@ -597,6 +602,7 @@ class AuthitemController extends Controller
         $auth->addChild($admin_role,$manage_purch);
         $auth->addChild($admin_role,$manage_loan);
         $auth->addChild($admin_role,$manage_sale);
+        $auth->addChild($admin_role,$manage_sale_operator);
         $auth->addChild($admin_role,$manage_employee);
         $auth->addChild($admin_role,$manage_message);
         $auth->addChild($admin_role,$manage_warehouse);
