@@ -436,6 +436,11 @@ class AuthitemController extends Controller
         $sale_permission->description = "สิทธิ์ใช้งานโมดูล sale";
         $auth->add($sale_permission);
 
+        $sale_clerk_permission = $auth->createPermission('sale_clerk');
+        $sale_clerk_permission->description = "สิทธิ์ใช้งานโมดูล sale clerk";
+        $auth->add($sale_clerk_permission);
+
+
         $auth->addChild($sale_permission,$sale_index);
         $auth->addChild($sale_permission,$sale_view);
         $auth->addChild($sale_permission,$sale_update);
@@ -447,6 +452,17 @@ class AuthitemController extends Controller
         $auth->addChild($sale_permission,$sale_confirm);
         $auth->addChild($sale_permission,$sale_finditem);
         $auth->addChild($sale_permission,$sale_printbill);
+
+        $auth->addChild($sale_clerk_permission,$sale_index);
+        $auth->addChild($sale_clerk_permission,$sale_view);
+        $auth->addChild($sale_clerk_permission,$sale_update);
+        $auth->addChild($sale_clerk_permission,$sale_delete);
+        $auth->addChild($sale_clerk_permission,$sale_create);
+        $auth->addChild($sale_clerk_permission,$sale_showemp);
+        $auth->addChild($sale_clerk_permission,$sale_getzoneinfo);
+        $auth->addChild($sale_clerk_permission,$sale_cancel);
+        $auth->addChild($sale_clerk_permission,$sale_finditem);
+        $auth->addChild($sale_clerk_permission,$sale_printbill);
 
         $manage_sale = $auth->createRole('Manage sale');
         $manage_sale->description = "Manage product issue";

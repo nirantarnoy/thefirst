@@ -180,7 +180,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-url'=>$url,
                             'onclick'=>'confirmsale($(this));'
                         ]);
-                        return Html::a('<span class="glyphicon glyphicon-flash btn btn-default"></span>', 'javascript:void(0)', $options);
+                        return Yii::$app->user->can('sale/confirmsale')? Html::a('<span class="glyphicon glyphicon-flash btn btn-default"></span>', 'javascript:void(0)', $options):'';
                      },
                     'printbill' => function($url, $data, $index) {
                         $options = array_merge([

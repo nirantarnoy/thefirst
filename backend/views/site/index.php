@@ -202,7 +202,7 @@ $this->registerJs($js,static::POS_END);
                         ],
                         'credits' => ['enabled' => true],
                         'chart' => [
-                            'type' => 'line',
+                            'type' => 'column',
                         ],
                     ]
                 ]);
