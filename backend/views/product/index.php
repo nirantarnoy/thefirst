@@ -200,7 +200,7 @@ table.table-vendor td{
                         'striped' => false,
                         'hover' => true,
                         'options' => ['id'=>'grid_product'],
-                        //'tableOptions' => ['class' => 'table table-hover'],
+                        'tableOptions' => ['class' => 'table table-hover'],
                         'emptyText' => '<div style="color: red;align: center;"> <b>ไม่พบรายการไดๆ</b></div>',
                         'rowOptions' => function($model, $key, $index, $gird){
                             $contextMenuId = $gird->columns[0]->contextMenuId;

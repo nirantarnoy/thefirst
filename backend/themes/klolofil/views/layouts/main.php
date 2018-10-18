@@ -47,7 +47,7 @@ $last_message = \backend\models\Message::find()->where(['status'=>1])->limit(6)-
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?php $this->registerCsrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
-        <link rel="shortcut icon" href="<?php echo Yii::$app->getUrlManager()->baseUrl; ?> THEFIRST" type="image/x-icon" />
+        <link rel="shortcut icon" href="<?=Url::to(['site/index'],true) ?> THEFIRST" type="image/x-icon" />
 
         <?php $this->head() ?>
 
@@ -55,10 +55,10 @@ $last_message = \backend\models\Message::find()->where(['status'=>1])->limit(6)-
     <body>
     <div id="wrapper">
     <!-- NAVBAR -->
-    <nav id="main-nav" class="navbar navbar-default navbar-fixed-top">
+    <nav id="main-nav" style="z-index: 20000" class="navbar navbar-default navbar-fixed-top">
         <div class="brand">
 <!--            <a href="index.html"><img src="img/aj.png" alt="Klorofil Logo" class="img-responsive logo"></a>-->
-            <a href="index.html">THE FIRST</a>
+            <a href="<?=Url::to(['site/index'],true) ?>">THE FIRST</a>
         </div>
         <div class="container-fluid">
             <div class="navbar-btn">
@@ -71,7 +71,7 @@ $last_message = \backend\models\Message::find()->where(['status'=>1])->limit(6)-
                 </div>
             </form>
 
-            <div id="navbar-menu">
+            <div id="navbar-menu" style="z-index: 20000">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle icon-menu" data-toggle="dropdown">
