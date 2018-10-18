@@ -131,12 +131,13 @@ $this->registerJsFile(
                         ],
                         [
                             'attribute'=>'type',
+                            'format' => 'html',
                             'contentOptions' => ['style' => 'vertical-align: middle'],
                             'value' => function($data){
                               if($data->type ==1){
-                                  return 'Role';
+                                  return "<i class='fa fa-lock text-primary'></i>"." role";
                               }else{
-                                  return 'Permission';
+                                  return "<i class='fa fa-bolt text-warning'></i>"." permission";
                               }
                             }
                         ],

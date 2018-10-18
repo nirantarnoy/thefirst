@@ -55,6 +55,8 @@ class AuthitemController extends Controller
         $pageSize = \Yii::$app->request->post("perpage");
         $searchModel = new AuthitemSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->andFilterWhere(['type'=>1])->orFilterWhere(['LIKE','description','สิทธิ์']);
+        $dataProvider->setSort(['defaultOrder'=>['type'=>SORT_ASC]]);
         $dataProvider->pagination->pageSize = $pageSize;
 
         return $this->render('index', [
@@ -95,6 +97,14 @@ class AuthitemController extends Controller
             $newrole->type = $model->type;
             $auth->add($newrole);
 
+            if(count($model->child_list)>0){
+                for($i=0;$i<=count($model->child_list)-1;$i++){
+                    $item = $auth->getPermission($model->child_list[$i]);
+                    $auth->addChild($newrole,$item);
+                }
+            }
+
+
 
                 $session = Yii::$app->session;
                 $session->setFlash('msg','บันทึกรายการเรียบร้อย');
@@ -127,17 +137,20 @@ class AuthitemController extends Controller
           //  print_r($childlist);return;
 
             $auth = Yii::$app->authManager;
-            $olditem = $auth->getRole($model->name);
+            $olditem = $model->type == 1?$auth->getRole($model->name):$auth->getPermission($model->name);
             $olditem->description = $model->description;
             $olditem->type = $model->type;
 
             $auth->update($model->name,$olditem);
 
             if(sizeof($childlist)>0){
+               $auth->removeChildren($olditem);
+              // print_r($olditem);return;
                for($i=0;$i<=count($childlist)-1;$i++){
                    //echo $childlist[$i];return;
                    $childitem = $auth->getRole($childlist[$i]);
-                   $auth->addChild($olditem,$childitem);
+                   $childitem2 = $auth->getPermission($childlist[$i]);
+                   $auth->addChild($olditem,count($childitem)>0?$childitem:$childitem2);
                }
 
             }
@@ -515,6 +528,8 @@ class AuthitemController extends Controller
         $auth->add($claim_create);
         $claim_findso = $auth->createPermission('claim/findso');
         $auth->add($claim_findso);
+        $claim_confirm = $auth->createPermission('claim/confirmclaim');
+        $auth->add($claim_confirm);
 
         $claim_permission = $auth->createPermission('claimmodule');
         $claim_permission->description = "สิทธิ์ใช้งานโมดูล claim";
@@ -526,11 +541,28 @@ class AuthitemController extends Controller
         $auth->addChild($claim_permission,$claim_delete);
         $auth->addChild($claim_permission,$claim_create);
         $auth->addChild($claim_permission,$claim_findso);
+        $auth->addChild($claim_permission,$claim_confirm);
 
         $manage_claim = $auth->createRole('Manage claim');
         $manage_claim->description = "Manage claim";
         $auth->add($manage_claim);
         $auth->addChild($manage_claim,$claim_permission);
+
+        $claim_operator_permission = $auth->createPermission('claim operator task');
+        $claim_operator_permission->description = "สิทธิ์ใช้งานโมดูล claim ทั่วไป";
+        $auth->add($claim_operator_permission);
+
+        $auth->addChild($claim_operator_permission,$claim_index);
+        $auth->addChild($claim_operator_permission,$claim_view);
+        $auth->addChild($claim_operator_permission,$claim_update);
+        $auth->addChild($claim_operator_permission,$claim_delete);
+        $auth->addChild($claim_operator_permission,$claim_create);
+        $auth->addChild($claim_operator_permission,$claim_findso);
+
+        $manage_claim_operator = $auth->createRole('Claim operator');
+        $manage_claim_operator->description = "Claim operator";
+        $auth->add($manage_claim_operator);
+        $auth->addChild($manage_claim_operator,$claim_operator_permission);
 
 
         //message module
@@ -626,10 +658,12 @@ class AuthitemController extends Controller
         $auth->addChild($admin_role,$manage_purch);
         $auth->addChild($admin_role,$manage_loan);
         $auth->addChild($admin_role,$manage_sale);
-        $auth->addChild($admin_role,$manage_sale_operator);
         $auth->addChild($admin_role,$manage_employee);
         $auth->addChild($admin_role,$manage_message);
         $auth->addChild($admin_role,$manage_warehouse);
+        $auth->addChild($admin_role,$manage_claim);
+        $auth->addChild($admin_role,$manage_report);
+
 
         $user_role = $auth->createRole('System User');
         $user_role->description = "ผู้ใช้งานทั่วไป";
@@ -638,11 +672,13 @@ class AuthitemController extends Controller
 
         $auth->addChild($user_role,$manage_product);
         $auth->addChild($user_role,$manage_purch);
+        $auth->addChild($user_role,$manage_sale_operator);
+        $auth->addChild($user_role,$manage_claim_operator);
 
 
 
         $auth->assign($admin_role,1);
-        $auth->assign($user_role,19);
+        $auth->assign($user_role,2);
 
 
 

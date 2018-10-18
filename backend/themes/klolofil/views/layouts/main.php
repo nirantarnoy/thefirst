@@ -171,7 +171,7 @@ $last_message = \backend\models\Message::find()->where(['status'=>1])->limit(6)-
                             </div>
                         </li>
                     <?php endif;?>
-                    <?php if(\Yii::$app->user->can('Manage purchase')):?>
+                    <?php if(\Yii::$app->user->can('Manage purch')):?>
                         <li><a href="index.php?r=purch/index" class="purch"><i class="fa fa-shopping-cart"></i> <span>ซื้อสินค้า</span></a></li>
                     <?php endif;?>
                     <?php if(\Yii::$app->user->can('Manage sale')):?>
