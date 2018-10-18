@@ -221,7 +221,7 @@ $this->registerJs($js,static::POS_END);
                     <span class="info-label">ยอดชำระล่าสุด</span>
                 </div>
                 <div class="weekly-summary text-right">
-                    <span class="number">65,938</span>
+                    <span class="number">0</span>
                     <!--                                    <span class="percentage"><i class="fa fa-caret-down text-danger"></i> 8%</span>-->
                     <span class="info-label">ยอดขายที่ต้องได้</span>
                 </div>
