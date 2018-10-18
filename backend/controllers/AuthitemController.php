@@ -99,8 +99,9 @@ class AuthitemController extends Controller
 
             if(count($model->child_list)>0){
                 for($i=0;$i<=count($model->child_list)-1;$i++){
-                    $item = $auth->getPermission($model->child_list[$i]);
-                    $auth->addChild($newrole,$item);
+                    $item = $auth->getRole($model->child_list[$i]);
+                    $item2 = $auth->getPermission($model->child_list[$i]);
+                    $auth->addChild($newrole,count($item)>0?$item:$item2);
                 }
             }
 

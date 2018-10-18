@@ -60,9 +60,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $this->updateLoan(); //เกิน
-        $this->notifyLoan(1); // 7 วัน
-        $this->notifyLoan(2); // 7 วัน กรณีเลื่อน
+      //  $this->updateLoan(); //เกิน
+      //  $this->notifyLoan(1); // 7 วัน
+      //  $this->notifyLoan(2); // 7 วัน กรณีเลื่อน
 
 //        $date1 = date('d-m-Y',1541782800);
 //        $date2 =date('d-m-Y');

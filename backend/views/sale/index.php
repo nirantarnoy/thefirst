@@ -193,7 +193,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-url'=>$url,
                             'onclick'=>'printbill($(this));'
                         ]);
-                        return Html::a('<span class="glyphicon glyphicon-print btn btn-default"></span>', 'javascript:void(0)', $options);
+                        return Yii::$app->user->can('sale/printbill')?Html::a('<span class="glyphicon glyphicon-print btn btn-default"></span>', 'javascript:void(0)', $options):'';
                     },
                     'update' => function($url, $data, $index) {
                         $options = array_merge([
@@ -202,7 +202,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-pjax' => '0',
                             'id'=>'modaledit',
                         ]);
-                        return  Html::a(
+                        return  Yii::$app->user->can('sale/update')?Html::a(
                             '<span class="glyphicon glyphicon-pencil btn btn-default"></span>', $url, [
                             'id' => 'activity-view-link',
                             //'data-toggle' => 'modal',
@@ -210,7 +210,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-id' => $index,
                             'data-pjax' => '0',
                             // 'style'=>['float'=>'rigth'],
-                        ]);
+                        ]):'';
                     },
                     'delete' => function($url, $data, $index) {
                         $options = array_merge([
