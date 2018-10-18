@@ -204,11 +204,38 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]); ?>
                 </div>
             </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>เลขที่รายการ</th>
+                            <th>วันที่</th>
+                            <th>ราคา</th>
+                            <th>จำนวน</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach($stock_price as $value):?>
+                            <tr>
+                                <td><?=\backend\models\Journal::getJournalinfo($value->journal_line_id)->journal_no?></td>
+                                <td><?=date('d-m-Y',$value->created_at);?></td>
+                                <td><?=$value->price?></td>
+                                <td><?=$value->qty?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
 
        </div>
  </div>
 </div>
 </div>
+
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-headlin">

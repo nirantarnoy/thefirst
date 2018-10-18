@@ -171,7 +171,7 @@ class ProductController extends Controller
         $movementDp->pagination->pageSize = 10;
         $movementDp->query->andFilterWhere(['product_id'=>$id]);
 
-        $product_stock_price = \backend\models\Productstockprice::find()->where(['product_id'=>$id])->all();
+        $product_stock_price = \backend\models\Productstockprice::find()->where(['product_id'=>$id])->orderBy(['price'=>SORT_DESC])->all();
 
 
         return $this->render('view', [

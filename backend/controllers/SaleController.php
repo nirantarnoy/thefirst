@@ -443,8 +443,10 @@ class SaleController extends Controller
     }
     public function actionFindmaxprice(){
         $id = \Yii::$app->request->post("prodid");
+       // return $id;
         if($id){
-            $model = \backend\models\ProductPrice::find()->where(['product_id'=>$id])->max('price');
+
+            $model = \backend\models\Productstockprice::find()->where(['product_id'=>$id])->orderBy(['price'=>SORT_DESC])->one();
             if($model){
                 return $model->price;
             }

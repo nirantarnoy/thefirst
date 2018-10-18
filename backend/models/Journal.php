@@ -81,7 +81,7 @@ class Journal extends \common\models\Journal
                             $modelstockprice = new \backend\models\Productstockprice();
                             $modelstockprice->product_id = $data[$i]['product_id'];
                             $modelstockprice->price = $data[$i]['line_price'];
-                            $modelstockprice->journal_line_id = $modelline->id;
+                            $modelstockprice->journal_line_id = $model->id;
                             $modelstockprice->save(false);
                         }
                     }
@@ -151,6 +151,10 @@ class Journal extends \common\models\Journal
             $prefix =substr(date("Y"),2,2);
             return $prefix.'000001';
         }
+    }
+    public function getJournalinfo($id){
+        $model = \backend\models\Journal::find()->where(['id'=>$id])->one();
+        return count($model)>0?$model:null;
     }
 
 }

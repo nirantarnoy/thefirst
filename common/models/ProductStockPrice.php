@@ -32,7 +32,7 @@ class ProductStockPrice extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['product_id', 'journal_line_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['product_id','qty', 'journal_line_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['price'], 'number'],
         ];
     }
@@ -46,6 +46,7 @@ class ProductStockPrice extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'product_id' => Yii::t('app', 'Product ID'),
             'price' => Yii::t('app', 'Price'),
+            'qty' => Yii::t('app', 'Qty'),
             'journal_line_id' => Yii::t('app', 'Journal Line ID'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),

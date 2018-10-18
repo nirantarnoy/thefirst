@@ -271,6 +271,27 @@ class PurchController extends Controller
        }
 
     }
+    public function actionFinditemfull(){
+        $txt = \Yii::$app->request->post('txt');
+        $list = [];
+        if($txt == ''){
+            return Json::encode($list);
+            //return 'no';
+        }else{
+            $list = [];
+            $maxprice = 0;
+            $model = \backend\models\Product::find()->where(['product_code'=>$txt])->one();
+            if($model){
+              $model_max_price = \backend\models\Productstockprice::find()->where(['product_id'=>$model->id])->orderBy(['price'=>SORT_DESC])->one();
+              if($model_max_price){
+                  $maxprice = $model_max_price->price;
+              }
+              array_push($list,['product_id'=>$model->id,'name'=>$model->name,'maxprice'=>$maxprice]);
+            }
+            return Json::encode($list);
+        }
+
+    }
     public function actionGetlist(){
         $poid = \Yii::$app->request->post('purchid');
       //  return $poid;

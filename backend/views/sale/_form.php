@@ -140,7 +140,7 @@ use yii\helpers\Url;
                         <td style="width: 5%;padding-top: 15px;" class="line-no"></td>
                         <td style="width: 30%">
                             <div class="input-group">
-                                <input type="text" class="product_code" style="border: none;padding: 5px 5px 5px 5px;width: 100%;background:transparent;text-align: left" name="product_code[]"  placeholder="ค้นหารหัส...">
+                                <input type="text" onchange="productChange($(this))" class="product_code" style="border: none;padding: 5px 5px 5px 5px;width: 100%;background:transparent;text-align: left" name="product_code[]"  placeholder="ค้นหารหัส...">
                                 <input type="hidden" class="product_id" name="product_id[]" value="">
                                 <span class="input-group-btn">
                                     <div class="btn btn-default btn-search-item" style="border: none;background: transparent;"  onclick="findItem($(this));"><i class="fa fa-search-plus"></i></div>
@@ -170,7 +170,7 @@ use yii\helpers\Url;
                             <td style="width: 5%;padding-top: 15px;" class="line-no"></td>
                             <td style="width: 30%">
                                 <div class="input-group">
-                                    <input type="text" name="product_code[]" class="form-control product_code" placeholder="ค้นหารหัส..." value="<?=\backend\models\Product::findProductCode($value->product_id)?>">
+                                    <input type="text" onchange="productChange($(this))" name="product_code[]" class="form-control product_code" placeholder="ค้นหารหัส..." value="<?=\backend\models\Product::findProductCode($value->product_id)?>">
                                     <input type="hidden" class="product_id" name="product_id[]" value="<?=$value->product_id?>">
                                     <span class="input-group-btn">
                                     <div class="btn btn-default btn-search-item"  onclick="findItem($(this));"><i class="fa fa-search-plus"></i></div>
@@ -389,7 +389,9 @@ use yii\helpers\Url;
 
 <?php
 $url_to_find = Url::to(['purch/finditem'],true);
+$url_to_find_full = Url::to(['purch/finditemfull'],true);
 $url_to_loan = Url::to(['sale/loan'],true);
+$url_to_findmaxprice = Url::to(['sale/findmaxprice'],true);
 $url_to_find_loan = Url::to(['sale/findloan'],true);
 $js=<<<JS
   $(function() {
@@ -530,12 +532,27 @@ $js=<<<JS
     var prodname = e.closest("tr").find("td:eq(1)").text();
     var prodid = e.closest("tr").find(".recid").val();
     $(".table-item tbody tr").each(function() {
-        //alert('niran');
+       // alert(prodcode);
         if($(this).index() == currow){
+              var maxprice = 0;
+              $.ajax({
+                  'type':'post',
+                  'dataType': 'html',
+                  'url': "$url_to_findmaxprice",
+                  'async': false,
+                  'data': {'prodid': prodid},
+                  'success': function(data) {
+                    maxprice = data;
+                    
+                  }
+              });
+            
               $(this).closest('tr').find(".product_code").val(prodcode);
               $(this).closest('tr').find(".product_id").val(prodid);
               $(this).closest('tr').find(".product-name").val(prodname);
               $(this).closest('tr').find('.line-qty').focus().select();
+              $(this).closest('tr').find('.line-price').val(maxprice);
+              
         }
     });
     $("#findModal").modal("hide");
@@ -562,6 +579,23 @@ $js=<<<JS
       $(this).closest('tr').find('.line-no').text(nums);
         
     });
+  }
+  function productChange(e){
+      if(e.val()!=''){
+            $.ajax({
+              'type':'post',
+              'dataType': 'json',
+              'url': "$url_to_find_full",
+              'async': false,
+              'data': {'txt': e.val()},
+              'success': function(data) {
+                 e.closest("tr").find(".product_id").val(data[0]['product_id']);
+                 e.closest("tr").find(".product-name").val(data[0]['name']);
+                 e.closest("tr").find(".line-price").val(data[0]['maxprice']);
+                 e.closest("tr").find(".line-qty").focus().select();
+              }
+            });
+        }
   }
 JS;
 $this->registerJs($js,static::POS_END);

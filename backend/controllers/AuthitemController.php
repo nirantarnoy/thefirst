@@ -369,6 +369,8 @@ class AuthitemController extends Controller
         $auth->add($purch_createinv);
         $purch_finditem = $auth->createPermission('purch/finditem');
         $auth->add($purch_finditem);
+        $purch_finditemfull = $auth->createPermission('purch/finditemfull');
+        $auth->add($purch_finditemfull);
         $purch_getlist = $auth->createPermission('purch/getlist');
         $auth->add($purch_getlist);
         $purch_purchrec = $auth->createPermission('purch/purchrec');
@@ -389,6 +391,7 @@ class AuthitemController extends Controller
         $auth->addChild($purch_permission,$purch_finditem);
         $auth->addChild($purch_permission,$purch_getlist);
         $auth->addChild($purch_permission,$purch_purchrec);
+        $auth->addChild($purch_permission,$purch_finditemfull);
 
         $manage_purch = $auth->createRole('Manage purch');
         $manage_purch->description = "Manage product received";
