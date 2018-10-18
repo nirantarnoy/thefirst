@@ -331,6 +331,7 @@ class AuthitemController extends Controller
         $product_create = $auth->createPermission('product/create');
         $auth->add($product_create);
 
+
         $product_permission = $auth->createPermission('productmodule');
         $product_permission->description = "สิทธิ์ใช้งานโมดูล product";
         $auth->add($product_permission);
@@ -340,6 +341,7 @@ class AuthitemController extends Controller
         $auth->addChild($product_permission,$product_update);
         $auth->addChild($product_permission,$product_delete);
         $auth->addChild($product_permission,$product_create);
+
 
         $manage_product = $auth->createRole('Manage product');
         $manage_product->description = "Manage Product";
@@ -367,6 +369,10 @@ class AuthitemController extends Controller
         $auth->add($purch_createinv);
         $purch_finditem = $auth->createPermission('purch/finditem');
         $auth->add($purch_finditem);
+        $purch_getlist = $auth->createPermission('purch/getlist');
+        $auth->add($purch_getlist);
+        $purch_purchrec = $auth->createPermission('purch/purchrec');
+        $auth->add($purch_purchrec);
 
         $purch_permission = $auth->createPermission('purchmodule');
         $purch_permission->description = "สิทธิ์ใช้งานโมดูล purch";
@@ -381,6 +387,8 @@ class AuthitemController extends Controller
         $auth->addChild($purch_permission,$purch_cancelqc);
         $auth->addChild($purch_permission,$purch_createinv);
         $auth->addChild($purch_permission,$purch_finditem);
+        $auth->addChild($purch_permission,$purch_getlist);
+        $auth->addChild($purch_permission,$purch_purchrec);
 
         $manage_purch = $auth->createRole('Manage purch');
         $manage_purch->description = "Manage product received";
@@ -445,6 +453,8 @@ class AuthitemController extends Controller
         $auth->add($sale_finditem);
         $sale_printbill = $auth->createPermission('sale/printbill');
         $auth->add($sale_printbill);
+        $sale_maxprice = $auth->createPermission('sale/findmaxprice');
+        $auth->add($sale_maxprice);
 
         $sale_permission = $auth->createPermission('salemodule');
         $sale_permission->description = "สิทธิ์ใช้งานโมดูล sale";
@@ -466,6 +476,7 @@ class AuthitemController extends Controller
         $auth->addChild($sale_permission,$sale_confirm);
         $auth->addChild($sale_permission,$sale_finditem);
         $auth->addChild($sale_permission,$sale_printbill);
+        $auth->addChild($sale_permission,$sale_maxprice);
 
         $auth->addChild($sale_clerk_permission,$sale_index);
         $auth->addChild($sale_clerk_permission,$sale_view);
@@ -477,6 +488,7 @@ class AuthitemController extends Controller
         $auth->addChild($sale_clerk_permission,$sale_cancel);
         $auth->addChild($sale_clerk_permission,$sale_finditem);
         $auth->addChild($sale_clerk_permission,$sale_printbill);
+        $auth->addChild($sale_clerk_permission,$sale_maxprice);
 
         $manage_sale = $auth->createRole('Manage sale');
         $manage_sale->description = "Manage product issue";

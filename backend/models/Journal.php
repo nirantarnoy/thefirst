@@ -72,10 +72,17 @@ class Journal extends \common\models\Journal
                     $modelline->line_price = $data[$i]['line_price'];
                     $modelline->line_amount = (float)$data[$i]['qty'] * (float)$data[$i]['line_price'];
                     $modelline->stock_direction = $data[$i]['stock_line_type'];
+
                     if($modelline->save(false)){
                         $saveok = 1;
                         if($trans_type == \backend\helpers\JournalType::TYPE_PO){
                             self::updatePoRemain($refid,$data[$i]['product_id'],$data[$i]['qty']);
+
+                            $modelstockprice = new \backend\models\Productstockprice();
+                            $modelstockprice->product_id = $data[$i]['product_id'];
+                            $modelstockprice->price = $data[$i]['line_price'];
+                            $modelstockprice->journal_line_id = $modelline->id;
+                            $modelstockprice->save(false);
                         }
                     }
                 }

@@ -441,4 +441,15 @@ class SaleController extends Controller
             $return .= "ถ้วน";
         return $return ;
     }
+    public function actionFindmaxprice(){
+        $id = \Yii::$app->request->post("prodid");
+        if($id){
+            $model = \backend\models\ProductPrice::find()->where(['product_id'=>$id])->max('price');
+            if($model){
+                return $model->price;
+            }
+            return 0;
+        }
+        return 0;
+    }
 }

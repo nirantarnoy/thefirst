@@ -171,6 +171,8 @@ class ProductController extends Controller
         $movementDp->pagination->pageSize = 10;
         $movementDp->query->andFilterWhere(['product_id'=>$id]);
 
+        $product_stock_price = \backend\models\Productstockprice::find()->where(['product_id'=>$id])->all();
+
 
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -182,6 +184,7 @@ class ProductController extends Controller
             'dataProvider'=>$dataProvider,
             'movementSearch'=>$movementSearch,
             'movementDp' => $movementDp,
+            'stock_price'=>$product_stock_price,
 
         ]);
     }
