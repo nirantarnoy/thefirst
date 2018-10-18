@@ -505,31 +505,31 @@ class AuthitemController extends Controller
 
 
         //employee module
-        $employee_index = $auth->createPermission('employee/index');
-        $auth->add($employee_index);
-        $employee_update = $auth->createPermission('employee/update');
-        $auth->add($employee_update);
-        $employee_delete = $auth->createPermission('employee/delete');
-        $auth->add($employee_delete);
-        $employee_view = $auth->createPermission('employee/view');
-        $auth->add($employee_view);
-        $employee_create = $auth->createPermission('employee/create');
-        $auth->add($employee_create);
-
-        $employee_permission = $auth->createPermission('employeemodule');
-        $employee_permission->description = "สิทธิ์ใช้งานโมดูล employee";
-        $auth->add($employee_permission);
-
-        $auth->addChild($employee_permission,$employee_index);
-        $auth->addChild($employee_permission,$employee_view);
-        $auth->addChild($employee_permission,$employee_update);
-        $auth->addChild($employee_permission,$employee_delete);
-        $auth->addChild($employee_permission,$employee_create);
-
-        $manage_employee = $auth->createRole('Manage employee');
-        $manage_employee->description = "Manage invoice";
-        $auth->add($manage_employee);
-        $auth->addChild($manage_employee,$employee_permission);
+//        $employee_index = $auth->createPermission('employee/index');
+//        $auth->add($employee_index);
+//        $employee_update = $auth->createPermission('employee/update');
+//        $auth->add($employee_update);
+//        $employee_delete = $auth->createPermission('employee/delete');
+//        $auth->add($employee_delete);
+//        $employee_view = $auth->createPermission('employee/view');
+//        $auth->add($employee_view);
+//        $employee_create = $auth->createPermission('employee/create');
+//        $auth->add($employee_create);
+//
+//        $employee_permission = $auth->createPermission('employeemodule');
+//        $employee_permission->description = "สิทธิ์ใช้งานโมดูล employee";
+//        $auth->add($employee_permission);
+//
+//        $auth->addChild($employee_permission,$employee_index);
+//        $auth->addChild($employee_permission,$employee_view);
+//        $auth->addChild($employee_permission,$employee_update);
+//        $auth->addChild($employee_permission,$employee_delete);
+//        $auth->addChild($employee_permission,$employee_create);
+//
+//        $manage_employee = $auth->createRole('Manage employee');
+//        $manage_employee->description = "Manage invoice";
+//        $auth->add($manage_employee);
+//        $auth->addChild($manage_employee,$employee_permission);
 
         //claim module
         $claim_index = $auth->createPermission('claim/index');
@@ -674,7 +674,7 @@ class AuthitemController extends Controller
         $auth->addChild($admin_role,$manage_purch);
         $auth->addChild($admin_role,$manage_loan);
         $auth->addChild($admin_role,$manage_sale);
-        $auth->addChild($admin_role,$manage_employee);
+        //$auth->addChild($admin_role,$manage_employee);
         $auth->addChild($admin_role,$manage_message);
         $auth->addChild($admin_role,$manage_warehouse);
         $auth->addChild($admin_role,$manage_claim);
