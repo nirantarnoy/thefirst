@@ -60,9 +60,6 @@ $last_message = \backend\models\Message::find()->where(['status'=>1])->limit(6)-
 <!--            <a href="index.html"><img src="img/aj.png" alt="Klorofil Logo" class="img-responsive logo"></a>-->
             <a href="<?=Url::to(['site/index'],true) ?>">THE FIRST</a>
         </div>
-
-
-
         <div id="nav-container" class="container-fluid">
             <div class="navbar-btn">
                 <button type="button" class="btn-toggle-fullwidth"><i class="lnr lnr-arrow-left-circle"></i></button>
@@ -104,7 +101,8 @@ $last_message = \backend\models\Message::find()->where(['status'=>1])->limit(6)-
 <!--                        </ul>-->
 <!--                    </li>-->
                     <li id="li-nav" class="dropdown">
-                        <a href="#" class="dropdown-toggle" aria-expanded="true" data-toggle="dropdown"><span><?=\backend\models\User::findName(Yii::$app->user->id);?></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span><?=\backend\models\User::findName(Yii::$app->user->id);?></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+
                         <ul class="dropdown-menu">
                             <li><a href="index.php?r=site/resetpassword"><i class="fa fa-refresh"></i> <span>เปลี่ยนรหัสผ่าน</span></a></li>
                             <li><a href="index.php?r=site/logout"><i class="lnr lnr-exit"></i> <span>ออกจากระบบ</span></a></li>

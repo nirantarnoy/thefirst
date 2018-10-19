@@ -70,6 +70,7 @@ class CustomerController extends Controller
     {
         $model = new Customer();
         $model_address = new \backend\models\AddressBook();
+
         if ($model->load(Yii::$app->request->post() && $model_address->load(Yii::$app->request->post()))) {
             if($model->save()){
                 $model_address->party_type_id = 2;
