@@ -192,7 +192,7 @@ $dist = \common\models\District::find()->all();
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"><?=Yii::t('app','รหัสไปรษณีย์')?>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <?php if($model_address_plant):?>
+                            <?php if(!$model->isNewRecord):?>
                                 <?= $form->field($model_address_plant, 'zipcode')->textInput(['class'=>'form-control','id'=>'zipcode','style'=>'width: 20%;','readonly'=>'readonly'])->label(false) ?>
                             <?php else:?>
                                 <?= $form->field($model_address, 'zipcode')->textInput(['class'=>'form-control','id'=>'zipcode','style'=>'width: 20%;','readonly'=>'readonly'])->label(false) ?>
