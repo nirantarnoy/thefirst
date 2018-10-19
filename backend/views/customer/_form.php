@@ -114,7 +114,7 @@ $dist = \common\models\District::find()->all();
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"><?=Yii::t('app','ที่อยู่')?>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <?= $form->field($model_address_plant?$model_address_plant:$model_address, 'address')->textarea(['maxlength' => true,'class'=>'form-control'])->label(false) ?>
+                            <?= $form->field(!$model->isNewRecord?$model_address_plant:$model_address, 'address')->textarea(['maxlength' => true,'class'=>'form-control'])->label(false) ?>
                         </div>
                     </div>
                     <div class="form-group" style="margin-top: -10px">
