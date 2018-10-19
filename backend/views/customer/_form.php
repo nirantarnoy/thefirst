@@ -121,14 +121,14 @@ $dist = \common\models\District::find()->all();
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"><?=Yii::t('app','ถนน')?>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <?= $form->field($model_address_plant?$model_address_plant:$model_address, 'street')->textInput(['maxlength' => true,'class'=>'form-control'])->label(false) ?>
+                            <?= $form->field(!$model->isNewRecord?$model_address_plant:$model_address, 'street')->textInput(['maxlength' => true,'class'=>'form-control'])->label(false) ?>
                         </div>
                     </div>
                     <div class="form-group" style="margin-top: -10px">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"><?=Yii::t('app','ตำบล')?>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <?= $form->field($model_address_plant?$model_address_plant:$model_address, 'district_id')->widget(Select2::className(),
+                            <?= $form->field(!$model->isNewRecord?$model_address_plant:$model_address, 'district_id')->widget(Select2::className(),
                                 [
                                     'data'=> ArrayHelper::map($dist,'DISTRICT_ID','DISTRICT_NAME'),
                                     'options'=>['maxlength' => true,'class'=>'form-control form-inline','id'=>'district','disabled'=>'disabled'],
@@ -142,7 +142,7 @@ $dist = \common\models\District::find()->all();
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
 
-                            <?= $form->field($model_address_plant?$model_address_plant:$model_address, 'city_id')->widget(Select2::className(),
+                            <?= $form->field(!$model->isNewRecord?$model_address_plant:$model_address, 'city_id')->widget(Select2::className(),
                                 [
                                     'data'=> ArrayHelper::map($amp,'AMPHUR_ID','AMPHUR_NAME'),
                                     'options'=>['maxlength' => true,'class'=>'form-control form-inline','id'=>'city','disabled'=>'disabled',
@@ -170,7 +170,7 @@ $dist = \common\models\District::find()->all();
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
 
-                            <?= $form->field($model_address_plant?$model_address_plant:$model_address, 'province_id')->widget(Select2::className(),
+                            <?= $form->field(!$model->isNewRecord?$model_address_plant:$model_address, 'province_id')->widget(Select2::className(),
                                 [
                                     'data'=> ArrayHelper::map($prov,'PROVINCE_ID','PROVINCE_NAME'),
                                     'options'=>['maxlength' => true,'class'=>'form-control form-inline','id'=>'province',
