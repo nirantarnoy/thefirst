@@ -55,7 +55,7 @@ $last_message = \backend\models\Message::find()->where(['status'=>1])->limit(6)-
     <body>
     <div id="wrapper">
     <!-- NAVBAR -->
-    <nav id="main-nav" style="z-index: 20000" class="navbar navbar-default navbar-fixed-top">
+    <nav id="main-nav" class="navbar navbar-default navbar-fixed-top">
         <div class="brand">
 <!--            <a href="index.html"><img src="img/aj.png" alt="Klorofil Logo" class="img-responsive logo"></a>-->
             <a href="<?=Url::to(['site/index'],true) ?>">THE FIRST</a>

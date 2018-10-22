@@ -155,6 +155,7 @@ use yii\helpers\Url;
                         </td>
                         <td>
                             <input style="border: none;padding: 5px 5px 5px 5px;width: 100%;background:transparent;text-align: right" type="text" name="line_price[]" class="form-control line-price" value="0" onchange="linecal($(this));">
+                            <input style="border: none;padding: 5px 5px 5px 5px;width: 100%;background:transparent;text-align: right" type="text" name="line_stock_price[]" class="form-control line-stock-price" value="0">
                         </td>
                         <td>
                             <input style="border: none;padding: 5px 5px 5px 5px;width: 100%;background:transparent;text-align: right" name="line_total[]" readonly type="text" class="form-control line-total" value="0">
@@ -186,6 +187,7 @@ use yii\helpers\Url;
                             </td>
                             <td>
                                 <input style="text-align: right" type="text" name="line_price[]" class="form-control line-price" value="<?=$value->price?>" onchange="linecal($(this));">
+                                <input style="border: none;padding: 5px 5px 5px 5px;width: 100%;background:transparent;text-align: right" type="text" name="line_stock_price[]" class="form-control line-stock-price" value="<?=$value->stock_price_id?>">
                             </td>
                             <td>
                                 <input style="text-align: right;" name="line_total[]" readonly type="text" class="form-control line-total" value="<?=$value->line_total?>">
@@ -535,14 +537,16 @@ $js=<<<JS
        // alert(prodcode);
         if($(this).index() == currow){
               var maxprice = 0;
+              var stock_price_id = 0;
               $.ajax({
                   'type':'post',
-                  'dataType': 'html',
+                  'dataType': 'json',
                   'url': "$url_to_findmaxprice",
                   'async': false,
                   'data': {'prodid': prodid},
                   'success': function(data) {
-                    maxprice = data;
+                    maxprice = data[0]['price'];
+                    stock_price_id = data[0]['stock_price_id'];
                     
                   }
               });
@@ -552,6 +556,7 @@ $js=<<<JS
               $(this).closest('tr').find(".product-name").val(prodname);
               $(this).closest('tr').find('.line-qty').focus().select();
               $(this).closest('tr').find('.line-price').val(maxprice);
+              $(this).closest('tr').find('.line-stock-price').val(stock_price_id);
               
         }
     });

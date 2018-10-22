@@ -197,7 +197,6 @@ $dist = \common\models\District::find()->all();
                             <?php else:?>
                                 <?= $form->field($model_address, 'zipcode')->textInput(['class'=>'form-control','id'=>'zipcode','style'=>'width: 20%;','readonly'=>'readonly'])->label(false) ?>
                             <?php endif;?>
-
                         </div>
                     </div>
 

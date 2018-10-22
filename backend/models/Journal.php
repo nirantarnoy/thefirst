@@ -126,6 +126,15 @@ class Journal extends \common\models\Journal
         $model->all_qty = $stock;
         $model->save();
     }
+    public static function updateStockprice($prod_id,$price,$qty){
+        $model = \backend\models\Productstockprice::find()->where(['product_id'=>$prod_id,'price'=>$price])->one();
+        if($model){
+            if($model->qty > 0){
+                $model->qty = $model->qty - $qty;
+                $model->save(false);
+            }
+        }
+    }
     public static function updatePoRemain($id,$prodid,$qty){
         $model = \backend\models\Purchline::find()->where(['purch_id'=>$id,'product_id'=>$prodid])->one();
         if($model){

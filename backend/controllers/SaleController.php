@@ -104,6 +104,7 @@ class SaleController extends Controller
             $product_name = \Yii::$app->request->post('product_name');
             $line_qty = \Yii::$app->request->post('line_qty');
             $line_price = \Yii::$app->request->post('line_price');
+            $line_stock_price = \Yii::$app->request->post('line_stock_price');
             $line_total = \Yii::$app->request->post('line_total');
 
             $model->trans_date = strtotime($model->trans_date);
@@ -120,6 +121,7 @@ class SaleController extends Controller
                         $modelline->qty = (float)$line_qty[$i];
                         $modelline->price = (float)$line_price[$i];
                         $modelline->line_total = (float)$line_total[$i];
+                        $modelline->stock_price_id = $line_stock_price[$i];
                         $modelline->status = 1;
                         $modelline->save(false);
                     }
@@ -158,6 +160,7 @@ class SaleController extends Controller
             $product_name = \Yii::$app->request->post('product_name');
             $line_qty = \Yii::$app->request->post('line_qty');
             $line_price = \Yii::$app->request->post('line_price');
+            $line_stock_price = \Yii::$app->request->post('line_stock_price');
             $line_total = \Yii::$app->request->post('line_total');
 
             $model->trans_date = strtotime($model->trans_date);
@@ -172,6 +175,7 @@ class SaleController extends Controller
                         if($modelchk){
                             $modelchk->qty = (float)$line_qty[$i];
                             $modelchk->price = (float)$line_price[$i];
+                            $modelline->stock_price_id = $line_stock_price[$i];
                             $modelchk->line_total = (float)$line_total[$i];
                             $modelchk->status = 1;
                             $modelchk->save(false);
@@ -183,6 +187,7 @@ class SaleController extends Controller
                             $modelline->qty = (float)$line_qty[$i];
                             $modelline->price = (float)$line_price[$i];
                             $modelline->line_total = (float)$line_total[$i];
+                            $modelline->stock_price_id = $line_stock_price[$i];
                             $modelline->status = 1;
                             $modelline->save(false);
 
@@ -444,14 +449,16 @@ class SaleController extends Controller
     public function actionFindmaxprice(){
         $id = \Yii::$app->request->post("prodid");
        // return $id;
+        $list = [];
         if($id){
 
             $model = \backend\models\Productstockprice::find()->where(['product_id'=>$id])->orderBy(['price'=>SORT_DESC])->one();
             if($model){
-                return $model->price;
+                array_push($list,['price'=>$model->price,'stock_price_id'=>$model->id]);
+                return $list;
             }
-            return 0;
+            return $list;
         }
-        return 0;
+        return $list;
     }
 }
