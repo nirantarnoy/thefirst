@@ -14,7 +14,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@klolofil/dist');
 
 $this->registerCss('
      body{
-                font-family: "Cloud-Light";
+                font-family: "Cloud-Bold";
                 font-size: 16px;
             }
      .required{

@@ -77,12 +77,8 @@ class Journal extends \common\models\Journal
                         $saveok = 1;
                         if($trans_type == \backend\helpers\JournalType::TYPE_PO){
                             self::updatePoRemain($refid,$data[$i]['product_id'],$data[$i]['qty']);
+                            self::updateStockprice($data[$i]['product_id'],$data[$i]['line_price'],$data[$i]['qty'],$modelline->id);
 
-                            $modelstockprice = new \backend\models\Productstockprice();
-                            $modelstockprice->product_id = $data[$i]['product_id'];
-                            $modelstockprice->price = $data[$i]['line_price'];
-                            $modelstockprice->journal_line_id = $model->id;
-                            $modelstockprice->save(false);
                         }
                     }
                 }
@@ -126,13 +122,21 @@ class Journal extends \common\models\Journal
         $model->all_qty = $stock;
         $model->save();
     }
-    public static function updateStockprice($prod_id,$price,$qty){
+    public static function updateStockprice($prod_id,$price,$qty,$line){
+
         $model = \backend\models\Productstockprice::find()->where(['product_id'=>$prod_id,'price'=>$price])->one();
         if($model){
             if($model->qty > 0){
                 $model->qty = $model->qty - $qty;
                 $model->save(false);
             }
+        }else{
+            $modelstockprice = new \backend\models\Productstockprice();
+            $modelstockprice->product_id =$prod_id;
+            $modelstockprice->price = $price;
+            $modelstockprice->journal_line_id = $line;
+            $modelstockprice->qty = $qty;
+            $modelstockprice->save(false);
         }
     }
     public static function updatePoRemain($id,$prodid,$qty){
