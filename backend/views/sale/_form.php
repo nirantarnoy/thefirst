@@ -155,7 +155,7 @@ use yii\helpers\Url;
                         </td>
                         <td>
                             <input style="border: none;padding: 5px 5px 5px 5px;width: 100%;background:transparent;text-align: right" type="text" name="line_price[]" class="form-control line-price" value="0" onchange="linecal($(this));">
-                            <input style="border: none;padding: 5px 5px 5px 5px;width: 100%;background:transparent;text-align: right" type="text" name="line_stock_price[]" class="form-control line-stock-price" value="0">
+                            <input style="border: none;padding: 5px 5px 5px 5px;width: 100%;background:transparent;text-align: right" type="hidden" name="line_stock_price[]" class="form-control line-stock-price" value="0">
                         </td>
                         <td>
                             <input style="border: none;padding: 5px 5px 5px 5px;width: 100%;background:transparent;text-align: right" name="line_total[]" readonly type="text" class="form-control line-total" value="0">
@@ -392,6 +392,7 @@ use yii\helpers\Url;
 <?php
 $url_to_find = Url::to(['purch/finditem'],true);
 $url_to_find_full = Url::to(['purch/finditemfull'],true);
+$url_to_find_all = Url::to(['purch/finditemall'],true);
 $url_to_loan = Url::to(['sale/loan'],true);
 $url_to_findmaxprice = Url::to(['sale/findmaxprice'],true);
 $url_to_find_loan = Url::to(['sale/findloan'],true);
@@ -522,6 +523,7 @@ $js=<<<JS
       currow = e.parent().parent().parent().parent().index();
      // alert(currow);
       $("#findModal").modal("show");
+      producAll();
   }
   function removeline(e) {
     if(confirm("ต้องการลบรายการนี้ใช่หรือ")){
@@ -601,6 +603,32 @@ $js=<<<JS
               }
             });
         }
+  }
+  function producAll(){
+      
+              $.ajax({
+              'type':'post',
+              'dataType': 'json',
+              'url': "$url_to_find_all",
+              'data': {'txt':  '*'},
+              'success': function(data) {
+                // alert(data);return;
+                 if(data.length == 0){
+                      $(".table-list").hide();
+                     $(".modal-error").show();
+                 }else{
+                     $(".modal-error").hide();
+                     $(".table-list").show();
+                     var html = "";
+                     for(var i =0;i<=data.length -1;i++){
+                         html +="<tr ondblclick='getitem($(this));'><td>"+data[i]['product_code']+"</td><td>"+data[i]['name']+"<input type='hidden' class='recid' value='"+data[i]['id']+"'/></td></tr>"
+                       
+                     }
+                     $(".table-list tbody").html(html);
+                     
+                 }
+              }
+            });
   }
 JS;
 $this->registerJs($js,static::POS_END);

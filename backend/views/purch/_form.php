@@ -191,7 +191,7 @@ use yii\helpers\Url;
                         <th>ชื่อ</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="overflow-x: scroll;">
 
                     </tbody>
                 </table>
@@ -208,6 +208,7 @@ use yii\helpers\Url;
 <?php
 $url_to_find = Url::to(['purch/finditem'],true);
 $url_to_find_full = Url::to(['purch/finditemfull'],true);
+$url_to_find_all = Url::to(['purch/finditemall'],true);
 $js=<<<JS
   $(function() {
       var currow = -1;
@@ -235,7 +236,8 @@ $js=<<<JS
        if((event.which != 46 || $(this).val().indexOf(".") != -1) && (event.which <48 || event.which >57)){event.preventDefault();}
     });
     $(".itemsearch").change(function(){
-        if($(this).val()!=''){
+        //if($(this).val()!=''){
+      
             $.ajax({
               'type':'post',
               'dataType': 'json',
@@ -259,13 +261,14 @@ $js=<<<JS
                  }
               }
             });
-        }
+        //}
     });
   });
   function findItem(e) {
       currow = e.parent().parent().parent().parent().index();
      // alert(currow);
       $("#findModal").modal("show");
+      producAll();
   }
   function removeline(e) {
     if(confirm("ต้องการลบรายการนี้ใช่หรือ")){
@@ -316,6 +319,32 @@ $js=<<<JS
               }
             });
         }
+  }
+  function producAll(){
+      
+              $.ajax({
+              'type':'post',
+              'dataType': 'json',
+              'url': "$url_to_find_all",
+              'data': {'txt':  '*'},
+              'success': function(data) {
+                // alert(data);return;
+                 if(data.length == 0){
+                      $(".table-list").hide();
+                     $(".modal-error").show();
+                 }else{
+                     $(".modal-error").hide();
+                     $(".table-list").show();
+                     var html = "";
+                     for(var i =0;i<=data.length -1;i++){
+                         html +="<tr ondblclick='getitem($(this));'><td>"+data[i]['product_code']+"</td><td>"+data[i]['name']+"<input type='hidden' class='recid' value='"+data[i]['id']+"'/></td></tr>"
+                       
+                     }
+                     $(".table-list tbody").html(html);
+                     
+                 }
+              }
+            });
   }
 JS;
 $this->registerJs($js,static::POS_END);

@@ -271,11 +271,24 @@ class PurchController extends Controller
        }
 
     }
+    public function actionFinditemall(){
+        $txt = \Yii::$app->request->post('txt');
+
+            $model = \backend\models\Product::find()
+                ->asArray()
+                ->all();
+            return Json::encode($model);
+
+
+    }
     public function actionFinditemfull(){
         $txt = \Yii::$app->request->post('txt');
         $list = [];
         if($txt == ''){
-            return Json::encode($list);
+            $model = \backend\models\Product::find()
+                ->asArray()
+                ->all();
+            return Json::encode($model);
             //return 'no';
         }else{
             $list = [];
